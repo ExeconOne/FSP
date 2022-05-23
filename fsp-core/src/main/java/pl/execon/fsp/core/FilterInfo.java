@@ -1,4 +1,4 @@
-package pl.execon;
+package pl.execon.fsp.core;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
