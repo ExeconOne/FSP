@@ -7,18 +7,21 @@
     <groupId>pl.execon</groupId>
     <artifactId>fsp</artifactId>
     <packaging>pom</packaging>
-
     <version>1.0-SNAPSHOT</version>
-    <modules>
-        <module>fsp-core</module>
-    </modules>
 
     <properties>
         <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <lombok.version>1.18.24</lombok.version>
+        <fsp-core.version>1.0-SNAPSHOT</fsp-core.version>
+        <fsp-mongo.version>1.0-SNAPSHOT</fsp-mongo.version>
     </properties>
+
+    <modules>
+        <module>fsp-core</module>
+        <module>fsp-mongo</module>
+    </modules>
 
     <dependencyManagement>
         <dependencies>
@@ -26,6 +29,12 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>pl.execon</groupId>
+                <artifactId>fsp-core</artifactId>
+                <version>${fsp-core.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
