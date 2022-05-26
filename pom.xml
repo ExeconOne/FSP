@@ -36,6 +36,11 @@
                 <artifactId>fsp-core</artifactId>
                 <version>${fsp-core.version}</version>
             </dependency>
+            <dependency>
+                <groupId>pl.execon</groupId>
+                <artifactId>fsp-mongo</artifactId>
+                <version>${fsp-mongo.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
