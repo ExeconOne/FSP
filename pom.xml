@@ -4,42 +4,71 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>pl.execon</groupId>
+    <groupId>pl.execon.common</groupId>
     <artifactId>fsp</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>fsp-core</module>
+        <module>fsp-adapters</module>
+    </modules>
 
     <properties>
         <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <lombok.version>1.18.24</lombok.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+<!--        MODULES VERSIONS  -->
         <fsp-core.version>1.0-SNAPSHOT</fsp-core.version>
         <fsp-mongo.version>1.0-SNAPSHOT</fsp-mongo.version>
+<!--        LIBRARIES VERSIONS  -->
+        <lombok.version>1.18.24</lombok.version>
+<!--        TEST LIBRARIES VERSIONS  -->
+        <junit.version>5.8.2</junit.version>
+        <mockito.version>4.5.1</mockito.version>
+        <testcontainers.version>1.17.1</testcontainers.version>
     </properties>
-
-    <modules>
-        <module>fsp-core</module>
-        <module>fsp-mongo</module>
-    </modules>
 
     <dependencyManagement>
         <dependencies>
+<!--        MODULES  -->
+            <dependency>
+                <groupId>pl.execon.common</groupId>
+                <artifactId>fsp-core</artifactId>
+                <version>${fsp-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>pl.execon.common</groupId>
+                <artifactId>fsp-mongo</artifactId>
+                <version>${fsp-mongo.version}</version>
+            </dependency>
+            
+<!--        LIBRARIES  -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
             </dependency>
-
+<!--        TEST LIBRARIES  -->
             <dependency>
-                <groupId>pl.execon</groupId>
-                <artifactId>fsp-core</artifactId>
-                <version>${fsp-core.version}</version>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${junit.version}</version>
             </dependency>
             <dependency>
-                <groupId>pl.execon</groupId>
-                <artifactId>fsp-mongo</artifactId>
-                <version>${fsp-mongo.version}</version>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers</artifactId>
+                <version>${testcontainers.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>mongodb</artifactId>
+                <version>${testcontainers.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

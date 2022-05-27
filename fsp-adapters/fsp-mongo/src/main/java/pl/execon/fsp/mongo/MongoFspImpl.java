@@ -12,13 +12,13 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class MongoFspImpl<T> implements MongoFspRepository<T> {
+public abstract class MongoFspImpl<T> implements MongoFspRepository<T> {
 
     @NonNull
     private MongoTemplate mongoTemplate;
 
     @Override
-    public FspResponse<T> find(FspRequest request) {
+    public FspResponse<T> findFsp(FspRequest request) {
         Query query = new MongoFspRequestResolver(request).asQuery();
         List<T> list = mongoTemplate.find(query, getClazzType());
 
@@ -29,13 +29,5 @@ public class MongoFspImpl<T> implements MongoFspRepository<T> {
         long count = mongoTemplate.count(Query.of(query).limit(-1).skip(-1), this.getClass().getGenericSuperclass().getClass());
         return new FspResponse<>(request, list, count);
     }
-
-    @Override
-    public Class getClazzType() {
-//        Class clazz = getClass();
-//        ParameterizedType parameterizedType = (ParameterizedType) clazz.getGenericInterfaces()[0];
-//        Type[] typeArguments = parameterizedType.getActualTypeArguments();
-//        Class<?> typeArgument = (Class<?>) typeArguments[0];
-        return this.getClass();
-    }
+    
 }

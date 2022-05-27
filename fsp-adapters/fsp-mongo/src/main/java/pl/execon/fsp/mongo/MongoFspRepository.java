@@ -7,7 +7,7 @@ import pl.execon.fsp.core.FspResponse;
 public interface MongoFspRepository<T> extends FspRepository<T> {
 
     @Override
-    FspResponse<T> find(FspRequest request);
+    FspResponse<T> findFsp(FspRequest request);
 
-    Class getClazzType();
+    Class<T> getClazzType();
 }
