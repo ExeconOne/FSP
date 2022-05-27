@@ -12,7 +12,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public abstract class MongoFspImpl<T> implements MongoFspRepository<T> {
+public class MongoFspImpl<T> implements MongoFspRepository<T> {
 
     @NonNull
     private MongoTemplate mongoTemplate;
@@ -29,5 +29,9 @@ public abstract class MongoFspImpl<T> implements MongoFspRepository<T> {
         long count = mongoTemplate.count(Query.of(query).limit(-1).skip(-1), this.getClass().getGenericSuperclass().getClass());
         return new FspResponse<>(request, list, count);
     }
-    
+
+    @Override
+    public Class<T> getClazzType() {
+        return null;
+    }
 }
