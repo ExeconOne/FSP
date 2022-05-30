@@ -27,6 +27,7 @@
         <junit.version>5.8.2</junit.version>
         <mockito.version>4.5.1</mockito.version>
         <testcontainers.version>1.17.1</testcontainers.version>
+        <spring-boot-test.version>2.6.7</spring-boot-test.version>
     </properties>
 
     <dependencyManagement>
@@ -42,7 +43,7 @@
                 <artifactId>fsp-mongo</artifactId>
                 <version>${fsp-mongo.version}</version>
             </dependency>
-            
+
 <!--        LIBRARIES  -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -56,19 +57,9 @@
                 <version>${junit.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-core</artifactId>
-                <version>${mockito.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.testcontainers</groupId>
-                <artifactId>testcontainers</artifactId>
-                <version>${testcontainers.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.testcontainers</groupId>
-                <artifactId>mongodb</artifactId>
-                <version>${testcontainers.version}</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring-boot-test.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

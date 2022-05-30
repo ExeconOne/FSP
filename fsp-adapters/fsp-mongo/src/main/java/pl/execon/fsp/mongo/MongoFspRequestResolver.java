@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -59,7 +60,7 @@ public class MongoFspRequestResolver {
         return fspRequest.getFilter().stream()
                 .filter(condition)
                 .map(this::asCriteria)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     private Criteria joinCriteria(List<Criteria> criteria, Function<Criteria[], Criteria> joiner) {
