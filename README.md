@@ -19,6 +19,14 @@ Add `fsp-mongo` dependency to your project
     <version>0.1.0</version>
 </dependency>
 ```
+
+---
+**If you use `@EnableMongoRepositories` annotation**
+
+Add `"pl.execon.fsp.*"` to `basePackages`
+
+---
+
 Extend interface `MongoFsp<T>` in your repository interface. This will enable on this repository method `findFsp()`.
 ```java
 @Repository
@@ -57,6 +65,18 @@ public FspResponse<Product> getFilteredProducts(FspRequest fspRequest) {
     }
 }
 ```
+---
+You can also call mapping function on FspResponse object to map your result to for example DTO object
+
+```java
+public class ProductService {
+    public FspResponse<ProductDTO> getFilteredProducts(FspRequest fspRequest) {
+        FspResponse<Product> products = repository.findFsp(fspRequest, Product.class);
+        return products.map(product -> mappingFunction(product));
+    }
+}
+```
+---
 
 ```java
 @RestController

@@ -44,12 +44,18 @@ public class FspResponse<T> {
                 totalElementsCount,
                 pagesTotal(request, totalElementsCount));
     }
-    
+
     private FspResponse(List<T> content, FspResponseInfo info) {
         this.content = content;
         this.info = info;
     }
 
+    /**
+     * This method allows mapping document objects to DTO objects
+     * @param conversion
+     * @param <U>
+     * @return FspResponse with mapped document objects
+     */
     public <U> FspResponse<U> map(Function<List<T>, List<U>> conversion) {
         return new FspResponse<>(conversion.apply(content), info);
     }
@@ -87,7 +93,7 @@ public class FspResponse<T> {
          * Field with total pages information
          */
         Long totalPages;
-        
+
         private FspResponseInfo(Long totalElements) {
             this.totalElements = totalElements;
         }
