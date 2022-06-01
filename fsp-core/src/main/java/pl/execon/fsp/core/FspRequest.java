@@ -31,17 +31,12 @@ public class FspRequest {
     private List<FilterInfo> filter = new ArrayList<>();
 
     /**
-     * Filter operator
-     */
-    private FspFilterOperator filterOperator;
-
-    /**
      * List with {@link SortInfo} objects
      */
     private List<SortInfo> sort;
 
     /**
-     * Field containing {@link FilterInfo} 
+     * Field containing {@link FilterInfo}
      */
     private PageInfo page;
 

@@ -19,18 +19,7 @@ Add `fsp-mongo` dependency to your project
     <version>0.1.0</version>
 </dependency>
 ```
-
-In main application class add `@EnableMongoRepositories` annotation and in basePackages 
-next to your repository path add `pl.execon.fsp.*` to enable FSP module component scan.
-
-```
-@EnableMongoRepositories(basePackages = {
-        "path.to.your.project.*",
-        "pl.execon.fsp.*"
-})
-```
-
-Then extend interface `MongoFsp<T>` in your repository interface. This will enable on this repository method `findFsp()`.
+Extend interface `MongoFsp<T>` in your repository interface. This will enable on this repository method `findFsp()`.
 ```java
 @Repository
 public interface ProductRepository extends MongoRepository<Product, String>, MongoFsp<Product>{}
@@ -63,13 +52,57 @@ public class ProductService {
 
 private final ProductRepository repository;
 
-public FspResponse<TodoItem> getFilteredProducts() {
-    FspRequest fspRequest = FspRequest.builder()
-            .filter(List.of(
-                    new FilterInfo("name", Operation.EQUALS, "bike")
-            )).build();
-
+public FspResponse<Product> getFilteredProducts(FspRequest fspRequest) {
     return repository.findFsp(fspRequest, Product.class);
     }
 }
 ```
+
+```java
+@RestController
+@AllArgsConstructor
+public class ProductController {
+
+private final ProductService service;
+
+    @PostMapping("/fsp")
+    public FspResponse<Product> getFilteredProducts(@RequestBody FspRequest fspRequest) {
+        return service.getFilteredProducts(fspRequest);
+    }
+}
+```
+Example FspRequest body
+```json
+{
+  "filter": [
+    {
+      "by": "name",
+      "operation": "NOT_EQUALS",
+      "value": "bike",
+      "operator": "AND"
+    }
+  ],
+  "sort": [
+    {
+      "by": "name",
+      "direction": "ASC"
+    }
+  ],
+  "page": {
+    "number": 0,
+    "size": 10
+  }
+}
+```
+
+## License
+FSP is Open Source software released under the
+https://www.apache.org/licenses/LICENSE-2.0.html [Apache 2.0 license].
+
+---
+## Changelog
+
+### Ver. 0.1.0
+
++ Added fsp-model module
++ Added fsp-mongo which contains fsp support for mongodb
