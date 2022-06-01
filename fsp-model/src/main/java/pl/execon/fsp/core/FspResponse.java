@@ -37,6 +37,14 @@ public class FspResponse<T> {
     /**
      * Constructor for {@link FspResponse} with paging information
      */
+    public FspResponse(FspRequest request, List<T> content, long totalElementsCount) {
+        this.content = content;
+        this.info = new FspResponseInfo(
+                request.getPage().number,
+                totalElementsCount,
+                pagesTotal(request, totalElementsCount));
+    }
+    
     private FspResponse(List<T> content, FspResponseInfo info) {
         this.content = content;
         this.info = info;
@@ -79,14 +87,14 @@ public class FspResponse<T> {
          * Field with total pages information
          */
         Long totalPages;
-
-        /**
-         * Constructor only for total elements count without pagination info
-         * @param totalElements
-         */
-        public FspResponseInfo(Long totalElements) {
+        
+        private FspResponseInfo(Long totalElements) {
             this.totalElements = totalElements;
         }
+    }
+
+    private Long pagesTotal(FspRequest request, long elementsTotal) {
+        return (long) Math.ceil(1.0 * elementsTotal / request.getPage().size);
     }
 
 }
