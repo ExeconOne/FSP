@@ -10,7 +10,7 @@ import pl.execon.fsp.core.FspResponse;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class MongoFspImpl<T> implements MongoFsp<T> {
+class MongoFspImpl<T> implements MongoFsp<T> {
 
     @NonNull
     private MongoTemplate mongoTemplate;

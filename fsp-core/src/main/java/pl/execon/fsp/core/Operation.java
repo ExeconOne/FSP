@@ -1,5 +1,8 @@
 package pl.execon.fsp.core;
 
+/**
+ * Enum containing all available filter comparing operations
+ */
 public enum Operation {
     EQUALS,
     NOT_EQUALS,
