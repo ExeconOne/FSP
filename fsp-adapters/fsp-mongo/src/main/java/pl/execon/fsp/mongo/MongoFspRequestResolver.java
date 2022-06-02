@@ -24,7 +24,7 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static pl.execon.fsp.core.FspRequest.INITIAL_PAGE_NUMBER;
 
-public class MongoFspRequestResolver {
+class MongoFspRequestResolver {
 
     private final FspRequest fspRequest;
     private final Query query;
@@ -78,14 +78,15 @@ public class MongoFspRequestResolver {
                 .map(this::asOrder)
                 .toList());
 
-        if (nonNull(fspRequest.getPage()))
+        if (nonNull(fspRequest.getPage())) {
             query.with(
                     PageRequest.of(
                             fspRequest.getPage().getNumber(),
                             fspRequest.getPage().getSize() - INITIAL_PAGE_NUMBER,
                             sorting));
-        else
+        } else {
             query.with(sorting);
+        }
     }
 
     private Sort.Order asOrder(SortInfo sortInfo) {

@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
     <version>0.1.0</version>
     <modules>
-        <module>fsp-core</module>
+        <module>fsp-model</module>
         <module>fsp-adapters</module>
     </modules>
 
@@ -19,8 +19,8 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 <!--        MODULES VERSIONS  -->
-        <fsp-core.version>1.0-SNAPSHOT</fsp-core.version>
-        <fsp-mongo.version>1.0-SNAPSHOT</fsp-mongo.version>
+        <fsp-model.version>0.1.0</fsp-model.version>
+        <fsp-mongo.version>0.1.0</fsp-mongo.version>
 <!--        LIBRARIES VERSIONS  -->
         <lombok.version>1.18.24</lombok.version>
 <!--        TEST LIBRARIES VERSIONS  -->
@@ -35,8 +35,8 @@
 <!--        MODULES  -->
             <dependency>
                 <groupId>pl.execon.common</groupId>
-                <artifactId>fsp-core</artifactId>
-                <version>${fsp-core.version}</version>
+                <artifactId>fsp-model</artifactId>
+                <version>${fsp-model.version}</version>
             </dependency>
             <dependency>
                 <groupId>pl.execon.common</groupId>
