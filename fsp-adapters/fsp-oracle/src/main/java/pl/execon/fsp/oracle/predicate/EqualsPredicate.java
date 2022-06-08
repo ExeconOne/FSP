@@ -15,19 +15,22 @@ class EqualsPredicate<T> extends AbstractPredicate<T> {
     @Override
     protected Predicate createPredicate(Path field, Class fieldClass, Object target, CriteriaBuilder criteriaBuilder) {
         if (fieldClass.equals(String.class))
-            return field.in(target);
+            return criteriaBuilder.equal(field, target.toString());
 
         if (isNumericClass(fieldClass))
-            return field.in(createNumber(target.toString()));
+            return criteriaBuilder.equal(field, createNumber(target.toString()));
 
         if (fieldClass.isEnum())
-            return field.in(getEnum(fieldClass, target.toString()));
+            return criteriaBuilder.equal(field, (getEnum(fieldClass, target.toString())));
+
+        if (fieldClass.equals(Boolean.class) || fieldClass.equals(boolean.class))
+            return criteriaBuilder.equal(field, Boolean.parseBoolean(target.toString()));
 
         if (fieldClass.equals(LocalDateTime.class))
-            return field.in(LocalDateTime.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+            return criteriaBuilder.equal(field, LocalDateTime.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
 
         if (fieldClass.equals(Timestamp.class))
-            return field.in(Timestamp.valueOf(LocalDateTime.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
+            return criteriaBuilder.equal(field, Timestamp.valueOf(LocalDateTime.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
 
         return null;
     }
