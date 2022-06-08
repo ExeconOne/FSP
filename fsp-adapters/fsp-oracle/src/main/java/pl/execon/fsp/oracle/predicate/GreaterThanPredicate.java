@@ -4,6 +4,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -17,6 +18,9 @@ class GreaterThanPredicate<T> extends AbstractPredicate<T> {
 
         if (fieldClass.equals(Timestamp.class))
             return criteriaBuilder.greaterThan(field, Timestamp.valueOf(LocalDateTime.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
+
+        if (fieldClass.equals(LocalDate.class))
+            return criteriaBuilder.greaterThan(field, Timestamp.valueOf(LocalDateTime.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE)));
 
         if (fieldClass.equals(Long.class) || fieldClass.equals(long.class))
             return criteriaBuilder.greaterThan(field, Long.valueOf(target.toString()));
