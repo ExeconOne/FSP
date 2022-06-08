@@ -5,6 +5,7 @@ import org.springframework.data.jpa.domain.Specification;
 import pl.execon.fsp.core.FilterInfo;
 import pl.execon.fsp.core.FspFilterOperator;
 import pl.execon.fsp.core.FspRequest;
+import pl.execon.fsp.oracle.exception.FilteringException;
 import pl.execon.fsp.oracle.predicate.PredicateCreator;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -25,10 +26,6 @@ class FilteringSpecification<T> implements Specification<T> {
         this.filters = request.getFilter();
     }
 
-    public FilteringSpecification(List<FilterInfo> filters) {
-        this.filters = filters;
-    }
-
     @Override
     public Predicate toPredicate(Root<T> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
         this.criteriaBuilder = criteriaBuilder;
@@ -41,7 +38,7 @@ class FilteringSpecification<T> implements Specification<T> {
         return filters.stream()
                 .map(PredicateWithSuffix::new)
                 .reduce(PredicateWithSuffix::join)
-                .get()
+                .orElseThrow(() -> new FilteringException("Filters are empty"))
                 .predicate;
     }
 
@@ -67,7 +64,7 @@ class FilteringSpecification<T> implements Specification<T> {
                     return new PredicateWithSuffix(joinedAndPredicate, anotherPredicate.operator);
 
                 default:
-                    return new PredicateWithSuffix(criteriaBuilder.conjunction(), FspFilterOperator.AND);
+                    throw new FilteringException("Unknown sufix: " + operator);
             }
         }
     }
