@@ -18,21 +18,23 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-<!--        MODULES VERSIONS  -->
+        <!--        MODULES VERSIONS  -->
         <fsp-model.version>0.1.0</fsp-model.version>
         <fsp-mongo.version>0.1.0</fsp-mongo.version>
-<!--        LIBRARIES VERSIONS  -->
+        <!--        LIBRARIES VERSIONS  -->
         <lombok.version>1.18.24</lombok.version>
-<!--        TEST LIBRARIES VERSIONS  -->
+        <spring.data.common.version>2.6.3</spring.data.common.version>
+        <!--        TEST LIBRARIES VERSIONS  -->
         <junit.version>5.8.2</junit.version>
         <mockito.version>4.5.1</mockito.version>
-        <testcontainers.version>1.17.1</testcontainers.version>
         <spring-boot-test.version>2.6.7</spring-boot-test.version>
+        <h2.version>2.1.210</h2.version>
+        <commons.lang.version>3.12.0</commons.lang.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-<!--        MODULES  -->
+            <!--        MODULES  -->
             <dependency>
                 <groupId>pl.execon.common</groupId>
                 <artifactId>fsp-model</artifactId>
@@ -44,13 +46,23 @@
                 <version>${fsp-mongo.version}</version>
             </dependency>
 
-<!--        LIBRARIES  -->
+            <!--        LIBRARIES  -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
             </dependency>
-<!--        TEST LIBRARIES  -->
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-commons</artifactId>
+                <version>${spring.data.common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons.lang.version}</version>
+            </dependency>
+            <!--        TEST LIBRARIES  -->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
@@ -60,6 +72,11 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-test</artifactId>
                 <version>${spring-boot-test.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

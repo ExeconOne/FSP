@@ -1,15 +1,12 @@
-package pl.execon.fsp.mongo;
+package pl.execon.fsp.oracle;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pl.execon.fsp.core.FilterInfo;
 import pl.execon.fsp.core.FspFilterOperator;
 import pl.execon.fsp.core.FspRequest;
@@ -18,39 +15,39 @@ import pl.execon.fsp.core.Operation;
 import pl.execon.fsp.core.PageInfo;
 import pl.execon.fsp.core.SortInfo;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@DataMongoTest
-@TestPropertySource(properties = "spring.mongodb.embedded.version=3.4.5")
-@EnableAutoConfiguration
+@ActiveProfiles("test")
+@DataJpaTest
 @ContextConfiguration(classes = FspTestRepository.class)
-class MongoFspTest {
+@EnableAutoConfiguration
+class OracleFspTest {
 
     @Autowired
-    private FspTestRepository fspTestRepository;
+    private FspTestRepository repository;
 
     @BeforeAll
-    static void beforeAll(@Autowired MongoTemplate mongoTemplate) {
-        List<FspTestObj> testObjs = List.of(
-                new FspTestObj("1", "some text", 12, LocalDateTime.of(2022, 3, 15, 1, 1)),
-                new FspTestObj("2", "a some lorem", 13, LocalDateTime.of(2022, 3, 18, 20, 20)),
-                new FspTestObj("3", "Lorem Ipsum has been the industry's", 25, LocalDateTime.of(2022, 2, 1, 15, 15)),
-                new FspTestObj("4", "scrambled it to make a type specimen book", 121, LocalDateTime.of(1990, 4, 11, 21, 37))
+    static void beforeAll(@Autowired FspTestRepository repository) {
+        List<FspTestObj> init = List.of(
+                new FspTestObj(1L, "some text", 12, LocalDateTime.of(2022, 3, 15, 1, 1)),
+                new FspTestObj(2L, "a some lorem", 13, LocalDateTime.of(2022, 3, 18, 20, 20)),
+                new FspTestObj(3L, "Lorem Ipsum has been the industry's", 25, LocalDateTime.of(2022, 2, 1, 15, 15)),
+                new FspTestObj(4L, "scrambled it to make a type specimen book", 121, LocalDateTime.of(1990, 4, 11, 21, 37))
         );
-        mongoTemplate.insertAll(testObjs);
+        repository.saveAll(init);
     }
+
 
     @Test
     void findAllWithEmptyFspRequest() {
         //given
         FspRequest fspRequest = new FspRequest();
         //when
-        FspResponse<FspTestObj> fspResult = fspTestRepository.findFsp(fspRequest, FspTestObj.class);
+        FspResponse<FspTestObj> fspResult = repository.findFsp(fspRequest);
         //then
         assertAll(
                 () -> assertEquals(4, fspResult.getElementsCount()),
@@ -67,13 +64,13 @@ class MongoFspTest {
                 .build();
 
         //when
-        FspResponse<FspTestObj> fspResult = fspTestRepository.findFsp(fspRequest, FspTestObj.class);
+        FspResponse<FspTestObj> fspResult = repository.findFsp(fspRequest);
 
         //then
         assertAll(
                 () -> assertEquals(1, fspResult.getElementsCount()),
                 () -> assertEquals(1, fspResult.getContent().size()),
-                () -> assertEquals("1", fspResult.getContent().get(0).getId()),
+                () -> assertEquals(1, fspResult.getContent().get(0).getId()),
                 () -> assertEquals("some text", fspResult.getContent().get(0).getText()),
                 () -> assertEquals(12, fspResult.getContent().get(0).getNumber()),
                 () -> assertEquals(LocalDateTime.of(2022, 3, 15, 1, 1), fspResult.getContent().get(0).getDate())
@@ -89,7 +86,7 @@ class MongoFspTest {
                 .build();
 
         //when
-        FspResponse<FspTestObj> fspResult = fspTestRepository.findFsp(fspRequest, FspTestObj.class);
+        FspResponse<FspTestObj> fspResult = repository.findFsp(fspRequest);
 
         //then
         assertAll(
@@ -107,7 +104,7 @@ class MongoFspTest {
                 .build();
 
         //when
-        FspResponse<FspTestObj> fspResult = fspTestRepository.findFsp(fspRequest, FspTestObj.class);
+        FspResponse<FspTestObj> fspResult = repository.findFsp(fspRequest);
 
         //then
         assertAll(
@@ -127,14 +124,14 @@ class MongoFspTest {
                 .build();
 
         //when
-        FspResponse<FspTestObj> fspResult = fspTestRepository.findFsp(fspRequest, FspTestObj.class);
+        FspResponse<FspTestObj> fspResult = repository.findFsp(fspRequest);
 
         //then
         assertAll(
                 () -> assertEquals(2, fspResult.getElementsCount()),
                 () -> assertEquals(2, fspResult.getContent().size()),
-                () -> assertEquals("1", fspResult.getContent().get(0).getId()),
-                () -> assertEquals("2", fspResult.getContent().get(1).getId())
+                () -> assertEquals(1L, fspResult.getContent().get(0).getId()),
+                () -> assertEquals(2L, fspResult.getContent().get(1).getId())
         );
     }
 
@@ -149,16 +146,16 @@ class MongoFspTest {
                 .build();
 
         //when
-        FspResponse<FspTestObj> fspResult = fspTestRepository.findFsp(fspRequest, FspTestObj.class);
+        FspResponse<FspTestObj> fspResult = repository.findFsp(fspRequest);
 
         //then
         assertAll(
                 () -> assertEquals(2, fspResult.getElementsCount()),
                 () -> assertEquals(2, fspResult.getContent().size()),
-                () -> assertEquals("1", fspResult.getContent().get(0).getId()),
+                () -> assertEquals(1L, fspResult.getContent().get(0).getId()),
                 () -> assertEquals("some text", fspResult.getContent().get(0).getText()),
                 () -> assertEquals(12, fspResult.getContent().get(0).getNumber()),
-                () -> assertEquals("2", fspResult.getContent().get(1).getId()),
+                () -> assertEquals(2L, fspResult.getContent().get(1).getId()),
                 () -> assertEquals("a some lorem", fspResult.getContent().get(1).getText()),
                 () -> assertEquals(13, fspResult.getContent().get(1).getNumber()),
                 () -> assertEquals(LocalDateTime.of(2022, 3, 15, 1, 1), fspResult.getContent().get(0).getDate()),
@@ -178,7 +175,7 @@ class MongoFspTest {
                 .build();
 
         //when
-        FspResponse<FspTestObj> fspResult = fspTestRepository.findFsp(fspRequest, FspTestObj.class);
+        FspResponse<FspTestObj> fspResult = repository.findFsp(fspRequest);
 
         //then
         assertAll(
@@ -203,7 +200,7 @@ class MongoFspTest {
                 .build();
 
         //when
-        FspResponse<FspTestObj> fspResult = fspTestRepository.findFsp(fspRequest, FspTestObj.class);
+        FspResponse<FspTestObj> fspResult = repository.findFsp(fspRequest);
 
         //then
         assertAll(
@@ -216,24 +213,6 @@ class MongoFspTest {
     }
 
     @Test
-    void filterWithIncorrectDateFormat() {
-        //given
-        FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("date", Operation.EQUALS, "12")))
-                .page(new PageInfo(0, 10))
-                .build();
-
-        //when
-        FspResponse<FspTestObj> fspResult = fspTestRepository.findFsp(fspRequest, FspTestObj.class);
-
-        //then
-        assertAll(
-                () -> assertEquals(0, fspResult.getElementsCount()),
-                () -> assertEquals(0, fspResult.getContent().size())
-        );
-    }
-
-    @Test
     void filterWithNumberIn() {
         //given
         FspRequest fspRequest = FspRequest.builder()
@@ -242,7 +221,7 @@ class MongoFspTest {
                 .build();
 
         //when
-        FspResponse<FspTestObj> fspResult = fspTestRepository.findFsp(fspRequest, FspTestObj.class);
+        FspResponse<FspTestObj> fspResult = repository.findFsp(fspRequest);
 
         //then
         assertAll(
@@ -265,7 +244,7 @@ class MongoFspTest {
                 .build();
 
         //when
-        FspResponse<FspTestObj> fspResult = fspTestRepository.findFsp(fspRequest, FspTestObj.class);
+        FspResponse<FspTestObj> fspResult = repository.findFsp(fspRequest);
 
         //then
         assertAll(
@@ -282,14 +261,14 @@ class MongoFspTest {
         //given
         FspRequest fspRequest = FspRequest.builder()
                 .filter(List.of(
-                        new FilterInfo("date", Operation.GREATER_THAN, LocalDate.of(2022, 3, 15), FspFilterOperator.OR)
+                        new FilterInfo("date", Operation.GREATER_THAN, "2022-03-15T00:00", FspFilterOperator.OR)
                 ))
                 .page(new PageInfo(0, 10))
                 .sort(List.of(new SortInfo("date", SortInfo.Direction.DESC)))
                 .build();
 
         //when
-        FspResponse<FspTestObj> fspResult = fspTestRepository.findFsp(fspRequest, FspTestObj.class);
+        FspResponse<FspTestObj> fspResult = repository.findFsp(fspRequest);
 
         //then
         assertAll(
@@ -299,4 +278,5 @@ class MongoFspTest {
                 () -> assertEquals(LocalDateTime.of(2022, 3, 15, 1, 1), fspResult.getContent().get(1).getDate())
         );
     }
+
 }
