@@ -17,13 +17,19 @@ Add `"pl.execon.fsp.*"` to `basePackages`
 ---
 
 In your repository interface extend `MongoFsp<T>` interface in your repository interface. This will enable on this repository method `findFsp()`.
+
+```diff
++  extends MongoFsp<T>
+```
+
 ```java
 @Repository
 public interface ProductRepository extends MongoRepository<Product, String>,  MongoFsp<Product>{}
 ```
 
 Last step is using `findFsp()` method in your service passing `FspRequest` and mongo DocumentClass.
-```
+
+```java
 public FspResponse<Product> getFilteredProduct() {
     return repository.findFsp(new FspRequest(), Product.class);
 }
