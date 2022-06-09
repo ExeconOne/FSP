@@ -22,7 +22,7 @@ Add `"pl.execon.fsp.*"` to `basePackages`
 ```diff
 @EnableMongoRepositories(basePackages = {
         "your.repository.path",
-+        "pl.execon.fsp.*"
+        {+  "pl.execon.fsp.*" +]  
 })
 ```
 
