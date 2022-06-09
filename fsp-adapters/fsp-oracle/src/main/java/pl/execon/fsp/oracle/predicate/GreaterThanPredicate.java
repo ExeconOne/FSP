@@ -17,10 +17,10 @@ class GreaterThanPredicate<T> extends AbstractPredicate<T> {
             return criteriaBuilder.greaterThan(field, LocalDateTime.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
 
         if (fieldClass.equals(Timestamp.class))
-            return criteriaBuilder.greaterThan(field, Timestamp.valueOf(LocalDateTime.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
+            return criteriaBuilder.greaterThan(field, Timestamp.valueOf(LocalDateTime.parse(target.toString(), LOCAL_DATE_TIME_FORMATTER)));
 
         if (fieldClass.equals(LocalDate.class))
-            return criteriaBuilder.greaterThan(field, Timestamp.valueOf(LocalDateTime.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE)));
+            return criteriaBuilder.greaterThan(field, LocalDate.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE));
 
         if (fieldClass.equals(Long.class) || fieldClass.equals(long.class))
             return criteriaBuilder.greaterThan(field, Long.valueOf(target.toString()));

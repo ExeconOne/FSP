@@ -40,7 +40,7 @@ class SeriesPredicate<T> extends AbstractPredicate<T> {
         if (fieldClass.isAssignableFrom(LocalDate.class)) {
             return field.in(((List<Object>) target).stream()
                     .map(Object::toString)
-                    .map(obj -> LocalDateTime.parse(obj, DateTimeFormatter.ISO_LOCAL_DATE))
+                    .map(obj -> LocalDate.parse(obj, DateTimeFormatter.ISO_LOCAL_DATE))
                     .collect(Collectors.toList()));
         }
 

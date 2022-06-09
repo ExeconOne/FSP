@@ -43,7 +43,7 @@ class EqualsPredicate<T> extends AbstractPredicate<T> {
             return criteriaBuilder.equal(field, LocalDate.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE));
 
         if (fieldClass.equals(Timestamp.class))
-            return criteriaBuilder.equal(field, Timestamp.valueOf(LocalDateTime.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
+            return criteriaBuilder.equal(field, Timestamp.valueOf(LocalDateTime.parse(target.toString(), LOCAL_DATE_TIME_FORMATTER)));
 
         if (isNumericClass(fieldClass))
             return criteriaBuilder.equal(field, createNumber(target.toString()));
