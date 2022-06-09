@@ -4,6 +4,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -15,19 +16,37 @@ class EqualsPredicate<T> extends AbstractPredicate<T> {
     @Override
     protected Predicate createPredicate(Path field, Class fieldClass, Object target, CriteriaBuilder criteriaBuilder) {
         if (fieldClass.equals(String.class))
-            return field.in(target);
+            return criteriaBuilder.equal(field, target.toString());
 
-        if (isNumericClass(fieldClass))
-            return field.in(createNumber(target.toString()));
+        if (fieldClass.equals(Long.class) || fieldClass.equals(long.class))
+            return criteriaBuilder.equal(field, Long.valueOf(target.toString()));
+
+        if (fieldClass.equals(Integer.class) || fieldClass.equals(int.class))
+            return criteriaBuilder.equal(field, Integer.valueOf(target.toString()));
+
+        if (fieldClass.equals(Double.class) || fieldClass.equals(double.class))
+            return criteriaBuilder.equal(field, Double.valueOf(target.toString()));
+
+        if (fieldClass.equals(Float.class) || fieldClass.equals(float.class))
+            return criteriaBuilder.equal(field, Float.valueOf(target.toString()));
 
         if (fieldClass.isEnum())
-            return field.in(getEnum(fieldClass, target.toString()));
+            return criteriaBuilder.equal(field, (getEnum(fieldClass, target.toString())));
+
+        if (fieldClass.equals(Boolean.class) || fieldClass.equals(boolean.class))
+            return criteriaBuilder.equal(field, Boolean.parseBoolean(target.toString()));
 
         if (fieldClass.equals(LocalDateTime.class))
-            return field.in(LocalDateTime.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+            return criteriaBuilder.equal(field, LocalDateTime.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+
+        if (fieldClass.equals(LocalDate.class))
+            return criteriaBuilder.equal(field, LocalDate.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE));
 
         if (fieldClass.equals(Timestamp.class))
-            return field.in(Timestamp.valueOf(LocalDateTime.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
+            return criteriaBuilder.equal(field, Timestamp.valueOf(LocalDateTime.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
+
+        if (isNumericClass(fieldClass))
+            return criteriaBuilder.equal(field, createNumber(target.toString()));
 
         return null;
     }
