@@ -20,10 +20,10 @@ Add `fsp-mongo` dependency to your project
 Add `"pl.execon.fsp.*"` to `basePackages`
 
 ```diff
-@EnableMongoRepositories(basePackages = {
+    @EnableMongoRepositories(basePackages = {
         "your.repository.path",
-        {+  "pl.execon.fsp.*" +]  
-})
++        "pl.execon.fsp.*"
+    })
 ```
 
 </details>
