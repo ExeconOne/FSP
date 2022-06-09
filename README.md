@@ -9,14 +9,14 @@ FSP is a library that helps you filter and sort objects in your database using t
 
 This section describes how to use FSP with different databases.
 
-###[Instruction for MongoDB](../fsp/mongodb_instruction.md)
+###[Instruction for MongoDB](mongodb_instruction.md)
 
-###[Instruction for relational databases](../fsp/relational_instruction.md)
+###[Instruction for relational databases](relational_instruction.md)
 
 ---
 
 #Examples of FspRequest body
-###[FspRequest examples](../fsp/example_operations.md)
+###[FspRequest examples](example_operations.md)
 
 ---
 
@@ -25,4 +25,4 @@ FSP is Open Source software released under the
 https://www.apache.org/licenses/LICENSE-2.0.html [Apache 2.0 license].
 
 ---
-## [Changelog](../fsp/changelog.md)
+## [Changelog](changelog.md)
