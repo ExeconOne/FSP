@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -22,5 +23,7 @@ public class FspTestObj {
 
     private String text;
     private int number;
-    private LocalDateTime date;
+    private LocalDateTime dateTime;
+    private double floatingPointNumber;
+    private LocalDate date;
 }
