@@ -29,8 +29,7 @@
     {
       "by": "text",
       "operation": "EQUALS",
-      "value": "abc",
-      "operator": "AND"
+      "value": "abc"
     }
   ],
   "sort": [],
@@ -49,8 +48,7 @@
     {
       "by": "text",
       "operation": "NOT_EQUALS",
-      "value": "abc",
-      "operator": "AND"
+      "value": "abc"
     }
   ],
   "sort": [],
@@ -69,8 +67,7 @@
     {
       "by": "text",
       "operation": "CONTAINS",
-      "value": "a",
-      "operator": "AND"
+      "value": "a"
     }
   ],
   "sort": [],
@@ -92,8 +89,7 @@
       "value": [
         "abc",
         "dfg"
-      ],
-      "operator": "AND"
+      ]
     }
   ],
   "sort": [],
@@ -115,8 +111,7 @@
       "value": [
         "abc",
         "dfg"
-      ],
-      "operator": "AND"
+      ]
     }
   ],
   "sort": [],
@@ -135,8 +130,7 @@
     {
       "by": "number",
       "operation": "GREATER_THAN",
-      "value": 1.2,
-      "operator": "AND"
+      "value": 1.2
     }
   ],
   "sort": [],
@@ -155,8 +149,7 @@
     {
       "by": "number",
       "operation": "GREATER_OR_EQUALS",
-      "value": 1.2,
-      "operator": "AND"
+      "value": 1.2
     }
   ],
   "sort": [],
@@ -175,8 +168,7 @@
     {
       "by": "number",
       "operation": "LESS_THAN",
-      "value": 11.2,
-      "operator": "AND"
+      "value": 11.2
     }
   ],
   "sort": [],
@@ -195,8 +187,7 @@
     {
       "by": "number",
       "operation": "LESS_OR_EQUALS",
-      "value": 11.2,
-      "operator": "AND"
+      "value": 11.2
     }
   ],
   "sort": [],
@@ -215,8 +206,7 @@
     {
       "by": "number",
       "operation": "LESS_OR_EQUALS",
-      "value": 11.2,
-      "operator": "AND"
+      "value": 11.2
     }
   ],
   "sort": [
