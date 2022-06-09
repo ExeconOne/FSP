@@ -2,7 +2,10 @@
 
 ---
 ## Description
-FSP is a library that helps you filter and sort objects in your database using the easy-to-build FspRequest
+
+FSP is a library that helps you filter and sort objects in your database using the 
+easy-to-build FspRequest &rarr; which could be exposed as REST endpoint, request body 
+moves responsibility of filtering logic to FrontEnd Layer
 
 ---
 ## How to Use
