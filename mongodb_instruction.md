@@ -14,8 +14,8 @@ Add `fsp-mongo` dependency to your project
 <details>
 <summary><b>If you use @EnableMongoRepositories annotation</b></summary>
 
-[`@EnableMongoRepositories`](https://docs.spring.io/spring-data/mongodb/docs/current/api/org/springframework/data/mongodb/repository/config/EnableMongoRepositories.html) &larr; spring docs
-
+[`@EnableMongoRepositories`](https://docs.spring.io/spring-data/mongodb/docs/current/api/org/springframework/data/mongodb/repository/config/EnableMongoRepositories.html)
+&larr; spring docs
 
 Add `"pl.execon.fsp.*"` to `basePackages`
 
@@ -30,8 +30,7 @@ Add `"pl.execon.fsp.*"` to `basePackages`
 
 ---
 
-In your repository interface extend `MongoFsp<T>` interface in your repository interface. This will enable on this
-repository method `findFsp()`.
+In your repository interface extend `MongoFsp<T>` interface. This will enable on this repository method `findFsp()`.
 
 ```diff
 +  extends MongoFsp<T>
@@ -48,7 +47,7 @@ Last step is using `findFsp()` method in your service passing `FspRequest` and m
 
 ```java
 public FspResponse<Product> getFilteredProduct(){
-        return repository.findFsp(new FspRequest(),Product.class);
+        return repository.findFsp(new FspRequest(), Product.class);
         }
 ```
 
@@ -98,18 +97,6 @@ public class ProductController {
 ```
 
 ---
-You can also call mapping function on FspResponse object to map your result to for example DTO object
-
-```java
-public class ProductService {
-    public FspResponse<ProductDTO> getFilteredProducts(FspRequest fspRequest) {
-        FspResponse<Product> products = repository.findFsp(fspRequest, Product.class);
-        return products.map(product -> mappingFunction(product));
-    }
-}
-```
-
----
 
 <details>
 <summary><b>FspRequest mapping funcion</b></summary>
@@ -128,4 +115,5 @@ public class ProductService {
 </details>
 
 ---
+
 ### [Back to README](README.md)
