@@ -1,7 +1,5 @@
 package pl.execon.fsp.oracle.predicate;
 
-import org.apache.commons.lang3.math.NumberUtils;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
@@ -40,7 +38,7 @@ class SeriesPredicate<T> extends AbstractPredicate<T> {
         if (fieldClass.isAssignableFrom(LocalDate.class)) {
             return field.in(((List<Object>) target).stream()
                     .map(Object::toString)
-                    .map(obj -> LocalDateTime.parse(obj, DateTimeFormatter.ISO_LOCAL_DATE))
+                    .map(obj -> LocalDate.parse(obj, DateTimeFormatter.ISO_LOCAL_DATE))
                     .collect(Collectors.toList()));
         }
 
@@ -67,13 +65,6 @@ class SeriesPredicate<T> extends AbstractPredicate<T> {
                     .map(Object::toString)
                     .map(Float::valueOf)
                     .collect(Collectors.toList()));
-
-        if (isNumericClass(fieldClass)) {
-            return field.in(((List<Object>) target).stream()
-                    .map(Object::toString)
-                    .map(NumberUtils::createNumber)
-                    .collect(Collectors.toList()));
-        }
 
         return field.in((List<Object>) target);
     }

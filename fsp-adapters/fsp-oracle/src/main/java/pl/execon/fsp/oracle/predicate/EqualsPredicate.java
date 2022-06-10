@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static org.apache.commons.lang3.EnumUtils.getEnum;
-import static org.apache.commons.lang3.math.NumberUtils.createNumber;
 
 class EqualsPredicate<T> extends AbstractPredicate<T> {
 
@@ -43,10 +42,7 @@ class EqualsPredicate<T> extends AbstractPredicate<T> {
             return criteriaBuilder.equal(field, LocalDate.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE));
 
         if (fieldClass.equals(Timestamp.class))
-            return criteriaBuilder.equal(field, Timestamp.valueOf(LocalDateTime.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
-
-        if (isNumericClass(fieldClass))
-            return criteriaBuilder.equal(field, createNumber(target.toString()));
+            return criteriaBuilder.equal(field, Timestamp.valueOf(LocalDateTime.parse(target.toString(), LOCAL_DATE_TIME_FORMATTER)));
 
         return null;
     }

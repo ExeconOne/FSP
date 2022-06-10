@@ -7,12 +7,13 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 abstract class AbstractPredicate<T> {
 
     private static final String EXCEPTION_MESSAGE = "Unsupported field/operator combination: %s(%s) with operator %s";
-
+    static final DateTimeFormatter LOCAL_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public Predicate of(Root<T> root, CriteriaBuilder criteriaBuilder, FilterInfo filter) {
         Path field = root.get(filter.getBy());
@@ -25,13 +26,5 @@ abstract class AbstractPredicate<T> {
     }
 
     protected abstract Predicate createPredicate(Path field, Class fieldClass, Object target, CriteriaBuilder criteriaBuilder);
-
-    boolean isNumericClass(Class clazz) {
-        return Number.class.isAssignableFrom(clazz)
-                || clazz.equals(int.class)
-                || clazz.equals(long.class)
-                || clazz.equals(float.class)
-                || clazz.equals(double.class);
-    }
 
 }

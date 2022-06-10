@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -22,5 +24,17 @@ public class FspTestObj {
 
     private String text;
     private int number;
-    private LocalDateTime date;
+    private LocalDateTime dateTime;
+    private double floatingPointNumber;
+    private LocalDate date;
+    private float floatNumber;
+    private boolean isBlue;
+    private Colour colour;
+    private long longValue;
+    private Timestamp timestamp;
+
+
+  public enum Colour{
+      BLUE, RED, GREEN
+  }
 }
