@@ -1,7 +1,5 @@
 package pl.execon.fsp.oracle.predicate;
 
-import org.apache.commons.lang3.math.NumberUtils;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
@@ -67,13 +65,6 @@ class SeriesPredicate<T> extends AbstractPredicate<T> {
                     .map(Object::toString)
                     .map(Float::valueOf)
                     .collect(Collectors.toList()));
-
-        if (isNumericClass(fieldClass)) {
-            return field.in(((List<Object>) target).stream()
-                    .map(Object::toString)
-                    .map(NumberUtils::createNumber)
-                    .collect(Collectors.toList()));
-        }
 
         return field.in((List<Object>) target);
     }

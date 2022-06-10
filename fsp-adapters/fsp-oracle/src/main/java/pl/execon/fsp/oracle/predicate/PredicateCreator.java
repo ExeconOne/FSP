@@ -3,6 +3,7 @@ package pl.execon.fsp.oracle.predicate;
 import lombok.AllArgsConstructor;
 import pl.execon.fsp.core.FilterInfo;
 import pl.execon.fsp.core.Operation;
+import pl.execon.fsp.oracle.exception.FilteringException;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
@@ -53,7 +54,7 @@ public class PredicateCreator<T> {
                 );
 
             default:
-                return criteriaBuilder.conjunction();
+                throw new FilteringException("Unknown operator: " + operation.name());
         }
     }
 

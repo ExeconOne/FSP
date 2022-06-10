@@ -27,12 +27,4 @@ abstract class AbstractPredicate<T> {
 
     protected abstract Predicate createPredicate(Path field, Class fieldClass, Object target, CriteriaBuilder criteriaBuilder);
 
-    boolean isNumericClass(Class clazz) {
-        return Number.class.isAssignableFrom(clazz)
-                || clazz.equals(int.class)
-                || clazz.equals(long.class)
-                || clazz.equals(float.class)
-                || clazz.equals(double.class);
-    }
-
 }
