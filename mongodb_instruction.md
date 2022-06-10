@@ -52,7 +52,7 @@ public FspResponse<Product> getFilteredProduct(){
 ```
 
 ---
-Example of FspRequest for Product mongo document.
+Example of use FSP for Product mongo document.
 
 ```java
 

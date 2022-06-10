@@ -15,7 +15,7 @@ In your repository interface extend `RelationalFsp<T>` interface in your reposit
 repository method `findFsp()`.
 
 ```diff
-+  extends MongoFsp<T>
++  extends RelationalFsp<T>
 ```
 
 ```java
@@ -34,7 +34,7 @@ public FspResponse<Product> getFilteredProduct(){
 ```
 
 ---
-Example of FspRequest for Product entity.
+Example of use FSP for Product entity.
 
 ```java
 
