@@ -3,7 +3,6 @@ package pl.execon.fsp.oracle.predicate;
 import lombok.AllArgsConstructor;
 import pl.execon.fsp.core.FilterInfo;
 import pl.execon.fsp.core.Operation;
-import pl.execon.fsp.oracle.exception.FilteringException;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
@@ -17,45 +16,53 @@ public class PredicateCreator<T> {
 
     public Predicate toPredicate(FilterInfo filter) {
         Operation operation = filter.getOperation();
+        Predicate predicate = null;
         switch (operation) {
             case EQUALS:
-                return new EqualsPredicate<T>().of(root, criteriaBuilder, filter);
+                predicate = new EqualsPredicate<T>().of(root, criteriaBuilder, filter);
+                break;
 
             case NOT_EQUALS:
-                return new EqualsPredicate<T>().of(root, criteriaBuilder, filter).not();
+                predicate = new EqualsPredicate<T>().of(root, criteriaBuilder, filter).not();
+                break;
 
             case CONTAINS:
-                return new IncludePredicate<T>().of(root, criteriaBuilder, filter);
+                predicate =  new IncludePredicate<T>().of(root, criteriaBuilder, filter);
+                break;
 
             case IN:
-                return new SeriesPredicate<T>().of(root, criteriaBuilder, filter);
+                predicate =  new SeriesPredicate<T>().of(root, criteriaBuilder, filter);
+                break;
 
             case NOT_IN:
-                return new SeriesPredicate<T>().of(root, criteriaBuilder, filter).not();
+                predicate =  new SeriesPredicate<T>().of(root, criteriaBuilder, filter).not();
+                break;
 
             case GREATER_THAN:
-                return new GreaterThanPredicate<T>().of(root, criteriaBuilder, filter);
+                predicate =  new GreaterThanPredicate<T>().of(root, criteriaBuilder, filter);
+                break;
 
             case LESS_THAN:
-                return criteriaBuilder.and(
+                predicate =  criteriaBuilder.and(
                         new GreaterThanPredicate<T>().of(root, criteriaBuilder, filter).not(),
                         new EqualsPredicate<T>().of(root, criteriaBuilder, filter).not()
                 );
+                break;
 
             case GREATER_OR_EQUALS:
-                return criteriaBuilder.or(
+                predicate =  criteriaBuilder.or(
                         new GreaterThanPredicate<T>().of(root, criteriaBuilder, filter),
                         new EqualsPredicate<T>().of(root, criteriaBuilder, filter)
                 );
+                break;
 
             case LESS_OR_EQUALS:
-                return criteriaBuilder.or(
+                predicate =  criteriaBuilder.or(
                         new GreaterThanPredicate<T>().of(root, criteriaBuilder, filter).not()
                 );
-
-            default:
-                throw new FilteringException("Unknown operator: " + operation.name());
+                break;
         }
+        return predicate;
     }
 
 }

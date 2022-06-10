@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,6 +33,8 @@ public class FspTestObj {
     private Colour colour;
     private long longValue;
     private Timestamp timestamp;
+    @OneToOne
+    private InnerTestObj innerObj;
 
 
   public enum Colour{

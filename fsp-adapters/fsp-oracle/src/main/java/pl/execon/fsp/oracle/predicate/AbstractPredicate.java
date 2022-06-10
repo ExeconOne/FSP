@@ -8,6 +8,8 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 abstract class AbstractPredicate<T> {
@@ -16,7 +18,21 @@ abstract class AbstractPredicate<T> {
     static final DateTimeFormatter LOCAL_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public Predicate of(Root<T> root, CriteriaBuilder criteriaBuilder, FilterInfo filter) {
-        Path field = root.get(filter.getBy());
+        List<String> filterFields = new ArrayList<>();
+        Path field;
+        if (filter.getBy().contains(".")) {
+            filterFields.addAll(List.of(filter.getBy().split("\\.")));
+        }
+
+        if (!filterFields.isEmpty()) {
+            field = root.get(filterFields.get(0));
+            filterFields.remove(filterFields.get(0));
+            for (String filterField : filterFields) {
+               field = field.get(filterField);
+            }
+        } else {
+            field  = root.get(filter.getBy());
+        }
 
         Class fieldClass = field.getJavaType();
         Object target = filter.getValue();

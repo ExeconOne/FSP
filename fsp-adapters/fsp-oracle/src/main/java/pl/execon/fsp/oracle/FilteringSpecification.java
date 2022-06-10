@@ -54,18 +54,19 @@ class FilteringSpecification<T> implements Specification<T> {
         }
 
         PredicateWithSuffix join(PredicateWithSuffix anotherPredicate) {
+            PredicateWithSuffix predicateWithSuffix = null;
             switch (operator) {
                 case OR:
                     Predicate joinedOrPredicate = criteriaBuilder.or(predicate, anotherPredicate.predicate);
-                    return new PredicateWithSuffix(joinedOrPredicate, anotherPredicate.operator);
+                    predicateWithSuffix = new PredicateWithSuffix(joinedOrPredicate, anotherPredicate.operator);
+                    break;
 
                 case AND:
                     Predicate joinedAndPredicate = criteriaBuilder.and(predicate, anotherPredicate.predicate);
-                    return new PredicateWithSuffix(joinedAndPredicate, anotherPredicate.operator);
-
-                default:
-                    throw new FilteringException("Unknown sufix: " + operator);
+                    predicateWithSuffix = new PredicateWithSuffix(joinedAndPredicate, anotherPredicate.operator);
+                    break;
             }
+            return predicateWithSuffix;
         }
     }
 }

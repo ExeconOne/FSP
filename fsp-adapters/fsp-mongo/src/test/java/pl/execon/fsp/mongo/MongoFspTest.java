@@ -2,14 +2,12 @@ package pl.execon.fsp.mongo;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pl.execon.fsp.core.FilterInfo;
 import pl.execon.fsp.core.FspFilterOperator;
 import pl.execon.fsp.core.FspRequest;
@@ -37,10 +35,10 @@ class MongoFspTest {
     @BeforeAll
     static void beforeAll(@Autowired MongoTemplate mongoTemplate) {
         List<FspTestObj> testObjs = List.of(
-                new FspTestObj("1", "some text", 12, LocalDateTime.of(2022, 3, 15, 1, 1)),
-                new FspTestObj("2", "a some lorem", 13, LocalDateTime.of(2022, 3, 18, 20, 20)),
-                new FspTestObj("3", "Lorem Ipsum has been the industry's", 25, LocalDateTime.of(2022, 2, 1, 15, 15)),
-                new FspTestObj("4", "scrambled it to make a type specimen book", 121, LocalDateTime.of(1990, 4, 11, 21, 37))
+                new FspTestObj("1", "some text", 12, LocalDateTime.of(2022, 3, 15, 1, 1), new FspTestObj.InnerTestObj("abc")),
+                new FspTestObj("2", "a some lorem", 13, LocalDateTime.of(2022, 3, 18, 20, 20), new FspTestObj.InnerTestObj("def")),
+                new FspTestObj("3", "Lorem Ipsum has been the industry's", 25, LocalDateTime.of(2022, 2, 1, 15, 15), new FspTestObj.InnerTestObj("ghi")),
+                new FspTestObj("4", "scrambled it to make a type specimen book", 121, LocalDateTime.of(1990, 4, 11, 21, 37), new FspTestObj.InnerTestObj("lmn"))
         );
         mongoTemplate.insertAll(testObjs);
     }
@@ -75,6 +73,28 @@ class MongoFspTest {
                 () -> assertEquals(1, fspResult.getContent().size()),
                 () -> assertEquals("1", fspResult.getContent().get(0).getId()),
                 () -> assertEquals("some text", fspResult.getContent().get(0).getText()),
+                () -> assertEquals(12, fspResult.getContent().get(0).getNumber()),
+                () -> assertEquals(LocalDateTime.of(2022, 3, 15, 1, 1), fspResult.getContent().get(0).getDate())
+        );
+    }
+
+    @Test
+    void filterByInnerObjectTextEquals() {
+        //given
+        FspRequest fspRequest = FspRequest.builder()
+                .filter(List.of(new FilterInfo("innerTestObj.innerText", Operation.EQUALS, "abc")))
+                .page(new PageInfo(0, 10))
+                .build();
+
+        //when
+        FspResponse<FspTestObj> fspResult = fspTestRepository.findFsp(fspRequest, FspTestObj.class);
+
+        //then
+        assertAll(
+                () -> assertEquals(1, fspResult.getElementsCount()),
+                () -> assertEquals(1, fspResult.getContent().size()),
+                () -> assertEquals("1", fspResult.getContent().get(0).getId()),
+                () -> assertEquals("abc", fspResult.getContent().get(0).getInnerTestObj().getInnerText()),
                 () -> assertEquals(12, fspResult.getContent().get(0).getNumber()),
                 () -> assertEquals(LocalDateTime.of(2022, 3, 15, 1, 1), fspResult.getContent().get(0).getDate())
         );

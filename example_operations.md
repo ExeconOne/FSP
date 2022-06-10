@@ -259,4 +259,28 @@
 ```
 
 ---
+### Example of inner/related object filtering and sorting
+```json
+{
+  "filter": [
+    {
+      "by": "someObj.text",
+      "operation": "EQUALS",
+      "value": "abc"
+    }
+  ],
+  "sort": [
+    {
+      "by": "someObj.text",
+      "direction": "DESC"
+    }
+  ],
+  "page": {
+    "size": 10,
+    "number": 0
+  }
+}
+```
+
+---
 ### [Back to README](README.md)

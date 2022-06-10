@@ -2,6 +2,8 @@ package pl.execon.fsp.oracle;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -16,19 +18,19 @@ import pl.execon.fsp.core.PageInfo;
 import pl.execon.fsp.core.SortInfo;
 import pl.execon.fsp.oracle.exception.FilteringException;
 
-import java.lang.reflect.Executable;
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
 @DataJpaTest
-@ContextConfiguration(classes = FspTestRepository.class)
+@ContextConfiguration(classes = {FspTestRepository.class, FspInnerObjTestRepository.class})
 @EnableAutoConfiguration
 class OracleFspTest {
 
@@ -36,12 +38,16 @@ class OracleFspTest {
     private FspTestRepository repository;
 
     @BeforeAll
-    static void beforeAll(@Autowired FspTestRepository repository) {
+    static void beforeAll(@Autowired FspTestRepository repository, @Autowired FspInnerObjTestRepository innerObjTestRepository) {
+        InnerTestObj innerTestObj = new InnerTestObj(1L, "a");
+        InnerTestObj innerTestObj2 = new InnerTestObj(2L, "b");
+        innerObjTestRepository.save(innerTestObj);
+        innerObjTestRepository.save(innerTestObj2);
         List<FspTestObj> init = List.of(
-                new FspTestObj(1L, "some text", 12, LocalDateTime.of(2022, 3, 15, 1, 1), 12.5, LocalDate.of(2022, 3, 15), 5.5f, true, FspTestObj.Colour.BLUE, 5L, Timestamp.valueOf(LocalDateTime.of(2022, 3, 15, 1, 1))),
-                new FspTestObj(2L, "a some lorem", 13, LocalDateTime.of(2022, 3, 18, 20, 20), 13.5, LocalDate.of(2022, 3, 18), 3.7f, false, FspTestObj.Colour.GREEN, 245L, Timestamp.valueOf(LocalDateTime.of(2022, 3, 18, 20, 20))),
-                new FspTestObj(3L, "Lorem Ipsum has been the industry's", 25, LocalDateTime.of(2022, 2, 1, 15, 15), 25.4, LocalDate.of(2022, 2, 1), 67.8f, true, FspTestObj.Colour.BLUE, 33L, Timestamp.valueOf(LocalDateTime.of(2022, 2, 1, 15, 15))),
-                new FspTestObj(4L, "scrambled it to make a type specimen book", 121, LocalDateTime.of(1990, 4, 11, 21, 37), 121.6, LocalDate.of(1990, 4, 11), 47.5f, false, FspTestObj.Colour.RED, 19L, Timestamp.valueOf(LocalDateTime.of(1990, 4, 11, 21, 37)))
+                new FspTestObj(1L, "some text", 12, LocalDateTime.of(2022, 3, 15, 1, 1), 12.5, LocalDate.of(2022, 3, 15), 5.5f, true, FspTestObj.Colour.BLUE, 5L, Timestamp.valueOf(LocalDateTime.of(2022, 3, 15, 1, 1)), innerTestObj),
+                new FspTestObj(2L, "a some lorem", 13, LocalDateTime.of(2022, 3, 18, 20, 20), 13.5, LocalDate.of(2022, 3, 18), 3.7f, false, FspTestObj.Colour.GREEN, 245L, Timestamp.valueOf(LocalDateTime.of(2022, 3, 18, 20, 20)), innerTestObj),
+                new FspTestObj(3L, "Lorem Ipsum has been the industry's", 25, LocalDateTime.of(2022, 2, 1, 15, 15), 25.4, LocalDate.of(2022, 2, 1), 67.8f, true, FspTestObj.Colour.BLUE, 33L, Timestamp.valueOf(LocalDateTime.of(2022, 2, 1, 15, 15)), innerTestObj2),
+                new FspTestObj(4L, "scrambled it to make a type specimen book", 121, LocalDateTime.of(1990, 4, 11, 21, 37), 121.6, LocalDate.of(1990, 4, 11), 47.5f, false, FspTestObj.Colour.RED, 19L, Timestamp.valueOf(LocalDateTime.of(1990, 4, 11, 21, 37)), innerTestObj2)
         );
         repository.saveAll(init);
     }
@@ -1250,6 +1256,43 @@ class OracleFspTest {
         //then
         assertTrue(exception.getMessage().contains("Unsupported field/operator combination:"));
 
+    }
+
+    @Test
+    void shouldThrowsFilteringExceptionWhenEqualsObject() throws FilteringException {
+        //given
+        FspRequest fspRequest = FspRequest.builder()
+                .filter(List.of(new FilterInfo("innerObj", Operation.EQUALS, "test")))
+                .page(new PageInfo(0, 10))
+                .build();
+
+        //when
+        FilteringException exception = assertThrows(FilteringException.class, () -> repository.findFsp(fspRequest));
+
+        //then
+        assertTrue(exception.getMessage().contains("Unsupported field/operator combination:"));
+
+    }
+
+    @ParameterizedTest
+    @CsvSource({"innerObj.innerText"})
+    void shouldReturnFspForInnerObjectEquals(String value) throws FilteringException {
+        //given
+        FspRequest fspRequest = FspRequest.builder()
+                .filter(List.of(new FilterInfo(value, Operation.IN, List.of("a", "b"))))
+                .sort(List.of(new SortInfo("innerObj.innerText", SortInfo.Direction.DESC)))
+                .page(new PageInfo(0, 10))
+                .build();
+
+        //when
+        FspResponse<FspTestObj> fsp = repository.findFsp(fspRequest);
+        //then
+
+        assertAll(
+                () -> assertEquals(4, fsp.getElementsCount()),
+                () -> assertEquals("a", fsp.getContent().get(3).getInnerObj().getInnerText()),
+                () -> assertEquals("b", fsp.getContent().get(0).getInnerObj().getInnerText())
+        );
     }
 }
 
