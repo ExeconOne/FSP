@@ -8,6 +8,12 @@ easy-to-build FspRequest &rarr; which could be exposed as REST endpoint, request
 moves responsibility of filtering logic to FrontEnd Layer
 
 ---
+
+### Project requirements
++ java 8+
++ spring-boot 2+
+
+---
 ## How to Use
 
 This section describes how to use FSP with different databases.
