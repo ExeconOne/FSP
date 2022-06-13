@@ -2,6 +2,7 @@ package pl.execon.fsp.oracle;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pl.execon.fsp.core.FilterInfo;
 import pl.execon.fsp.core.FspFilterOperator;
 import pl.execon.fsp.core.FspRequest;
@@ -21,6 +23,7 @@ import pl.execon.fsp.oracle.exception.FilteringException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -28,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@ExtendWith({SpringExtension.class})
 @ActiveProfiles("test")
 @DataJpaTest
 @ContextConfiguration(classes = {FspTestRepository.class, FspInnerObjTestRepository.class})
@@ -43,7 +47,7 @@ class OracleFspTest {
         InnerTestObj innerTestObj2 = new InnerTestObj(2L, "b");
         innerObjTestRepository.save(innerTestObj);
         innerObjTestRepository.save(innerTestObj2);
-        List<FspTestObj> init = List.of(
+        List<FspTestObj> init = Arrays.asList(
                 new FspTestObj(1L, "some text", 12, LocalDateTime.of(2022, 3, 15, 1, 1), 12.5, LocalDate.of(2022, 3, 15), 5.5f, true, FspTestObj.Colour.BLUE, 5L, Timestamp.valueOf(LocalDateTime.of(2022, 3, 15, 1, 1)), innerTestObj),
                 new FspTestObj(2L, "a some lorem", 13, LocalDateTime.of(2022, 3, 18, 20, 20), 13.5, LocalDate.of(2022, 3, 18), 3.7f, false, FspTestObj.Colour.GREEN, 245L, Timestamp.valueOf(LocalDateTime.of(2022, 3, 18, 20, 20)), innerTestObj),
                 new FspTestObj(3L, "Lorem Ipsum has been the industry's", 25, LocalDateTime.of(2022, 2, 1, 15, 15), 25.4, LocalDate.of(2022, 2, 1), 67.8f, true, FspTestObj.Colour.BLUE, 33L, Timestamp.valueOf(LocalDateTime.of(2022, 2, 1, 15, 15)), innerTestObj2),
@@ -70,7 +74,7 @@ class OracleFspTest {
     void filterByTextEquals() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("text", Operation.EQUALS, "some text")))
+                .filter(Arrays.asList(new FilterInfo("text", Operation.EQUALS, "some text")))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -92,7 +96,7 @@ class OracleFspTest {
     void filterByNumberEquals() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("number", Operation.EQUALS, 12)))
+                .filter(Arrays.asList(new FilterInfo("number", Operation.EQUALS, 12)))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -114,7 +118,7 @@ class OracleFspTest {
     void filterByFloatNumberEquals() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("floatNumber", Operation.EQUALS, 5.5f)))
+                .filter(Arrays.asList(new FilterInfo("floatNumber", Operation.EQUALS, 5.5f)))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -136,7 +140,7 @@ class OracleFspTest {
     void filterByBooleanEquals() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("isBlue", Operation.EQUALS, true)))
+                .filter(Arrays.asList(new FilterInfo("isBlue", Operation.EQUALS, true)))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -159,7 +163,7 @@ class OracleFspTest {
     void filterByLongEquals() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("longValue", Operation.EQUALS, 245L)))
+                .filter(Arrays.asList(new FilterInfo("longValue", Operation.EQUALS, 245L)))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -178,7 +182,7 @@ class OracleFspTest {
     void filterByEnumEquals() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("colour", Operation.EQUALS, FspTestObj.Colour.BLUE)))
+                .filter(Arrays.asList(new FilterInfo("colour", Operation.EQUALS, FspTestObj.Colour.BLUE)))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -200,7 +204,7 @@ class OracleFspTest {
     void filterByFloatingPointNumberEquals() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("floatingPointNumber", Operation.EQUALS, 12.5)))
+                .filter(Arrays.asList(new FilterInfo("floatingPointNumber", Operation.EQUALS, 12.5)))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -222,7 +226,7 @@ class OracleFspTest {
     void filterByDateTimeEquals() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("dateTime", Operation.EQUALS, LocalDateTime.of(2022, 3, 15, 1, 1))))
+                .filter(Arrays.asList(new FilterInfo("dateTime", Operation.EQUALS, LocalDateTime.of(2022, 3, 15, 1, 1))))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -244,7 +248,7 @@ class OracleFspTest {
     void filterByTimestampEquals() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("timestamp", Operation.EQUALS, "2022-03-18 20:20:00")))
+                .filter(Arrays.asList(new FilterInfo("timestamp", Operation.EQUALS, "2022-03-18 20:20:00")))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -265,7 +269,7 @@ class OracleFspTest {
     void filterByDateEquals() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("date", Operation.EQUALS, LocalDate.of(2022, 3, 15))))
+                .filter(Arrays.asList(new FilterInfo("date", Operation.EQUALS, LocalDate.of(2022, 3, 15))))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -287,7 +291,7 @@ class OracleFspTest {
     void filterByTextNotEquals() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("text", Operation.NOT_EQUALS, "some text")))
+                .filter(Arrays.asList(new FilterInfo("text", Operation.NOT_EQUALS, "some text")))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -305,7 +309,7 @@ class OracleFspTest {
     void filterByNumberNotEquals() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("number", Operation.NOT_EQUALS, 12)))
+                .filter(Arrays.asList(new FilterInfo("number", Operation.NOT_EQUALS, 12)))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -323,7 +327,7 @@ class OracleFspTest {
     void filterByFloatingPointNumberNotEquals() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("floatingPointNumber", Operation.NOT_EQUALS, 12.5)))
+                .filter(Arrays.asList(new FilterInfo("floatingPointNumber", Operation.NOT_EQUALS, 12.5)))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -341,7 +345,7 @@ class OracleFspTest {
     void filterByDateTimeNotEquals() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("dateTime", Operation.NOT_EQUALS, (LocalDateTime.of(2022, 3, 15, 1, 1)))))
+                .filter(Arrays.asList(new FilterInfo("dateTime", Operation.NOT_EQUALS, (LocalDateTime.of(2022, 3, 15, 1, 1)))))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -359,7 +363,7 @@ class OracleFspTest {
     void filterByDateNotEquals() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("date", Operation.NOT_EQUALS, (LocalDate.of(2022, 3, 15)))))
+                .filter(Arrays.asList(new FilterInfo("date", Operation.NOT_EQUALS, (LocalDate.of(2022, 3, 15)))))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -377,7 +381,7 @@ class OracleFspTest {
     void filterByNumberNotIn() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("number", Operation.NOT_IN, List.of(12, 13))))
+                .filter(Arrays.asList(new FilterInfo("number", Operation.NOT_IN, Arrays.asList(12, 13))))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -397,7 +401,7 @@ class OracleFspTest {
     void filterByFloatNumberIn() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("floatNumber", Operation.IN, List.of(5.5f, 47.5f))))
+                .filter(Arrays.asList(new FilterInfo("floatNumber", Operation.IN, Arrays.asList(5.5f, 47.5f))))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -417,7 +421,7 @@ class OracleFspTest {
     void filterByEnumIn() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("colour", Operation.IN, List.of(FspTestObj.Colour.BLUE, FspTestObj.Colour.GREEN))))
+                .filter(Arrays.asList(new FilterInfo("colour", Operation.IN, Arrays.asList(FspTestObj.Colour.BLUE, FspTestObj.Colour.GREEN))))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -438,7 +442,7 @@ class OracleFspTest {
     void filterByBooleanIn() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("isBlue", Operation.IN, List.of(true))))
+                .filter(Arrays.asList(new FilterInfo("isBlue", Operation.IN, Arrays.asList(true))))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -460,7 +464,7 @@ class OracleFspTest {
     void filterByLongValueIn() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("longValue", Operation.IN, List.of(5L, 19L))))
+                .filter(Arrays.asList(new FilterInfo("longValue", Operation.IN, Arrays.asList(5L, 19L))))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -482,7 +486,7 @@ class OracleFspTest {
     void filterByFloatingPointNumberNotIn() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("floatingPointNumber", Operation.NOT_IN, List.of(12.5, 13.5))))
+                .filter(Arrays.asList(new FilterInfo("floatingPointNumber", Operation.NOT_IN, Arrays.asList(12.5, 13.5))))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -502,7 +506,7 @@ class OracleFspTest {
     void filterByTextNotIn() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("text", Operation.NOT_IN, List.of("some text", "a some lorem"))))
+                .filter(Arrays.asList(new FilterInfo("text", Operation.NOT_IN, Arrays.asList("some text", "a some lorem"))))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -522,7 +526,7 @@ class OracleFspTest {
     void filterByDateTimeNotIn() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("dateTime", Operation.NOT_IN, List.of((LocalDateTime.of(2022, 3, 15, 1, 1))))))
+                .filter(Arrays.asList(new FilterInfo("dateTime", Operation.NOT_IN, Arrays.asList((LocalDateTime.of(2022, 3, 15, 1, 1))))))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -543,7 +547,7 @@ class OracleFspTest {
     void filterByDateNotIn() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("date", Operation.NOT_IN, List.of((LocalDate.of(2022, 3, 15))))))
+                .filter(Arrays.asList(new FilterInfo("date", Operation.NOT_IN, Arrays.asList((LocalDate.of(2022, 3, 15))))))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -564,7 +568,7 @@ class OracleFspTest {
     void filterByTextContains() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("text", Operation.CONTAINS, "some")))
+                .filter(Arrays.asList(new FilterInfo("text", Operation.CONTAINS, "some")))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -584,7 +588,7 @@ class OracleFspTest {
     void filterByNumberContains() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("number", Operation.CONTAINS, 1)))
+                .filter(Arrays.asList(new FilterInfo("number", Operation.CONTAINS, 1)))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -605,7 +609,7 @@ class OracleFspTest {
     void filterByFloatingPointNumberContains() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("floatingPointNumber", Operation.CONTAINS, 1)))
+                .filter(Arrays.asList(new FilterInfo("floatingPointNumber", Operation.CONTAINS, 1)))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -626,7 +630,7 @@ class OracleFspTest {
     void filterByDateTimeContains() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("dateTime", Operation.CONTAINS, 2022)))
+                .filter(Arrays.asList(new FilterInfo("dateTime", Operation.CONTAINS, 2022)))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -647,7 +651,7 @@ class OracleFspTest {
     void filterByDateContains() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("date", Operation.CONTAINS, 2022)))
+                .filter(Arrays.asList(new FilterInfo("date", Operation.CONTAINS, 2022)))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -668,7 +672,7 @@ class OracleFspTest {
     void filterWithOrOperatorAndTextEquals() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(
+                .filter(Arrays.asList(
                         new FilterInfo("text", Operation.EQUALS, "some text", FspFilterOperator.OR),
                         new FilterInfo("text", Operation.EQUALS, "a some lorem", FspFilterOperator.OR)))
                 .page(new PageInfo(0, 10))
@@ -696,7 +700,7 @@ class OracleFspTest {
     void filterWithAndOperatorAndLongValueEquals() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(
+                .filter(Arrays.asList(
                         new FilterInfo("longValue", Operation.EQUALS, 5L, FspFilterOperator.AND),
                         new FilterInfo("id", Operation.EQUALS, 1L, FspFilterOperator.AND)))
                 .page(new PageInfo(0, 10))
@@ -721,11 +725,11 @@ class OracleFspTest {
     void filterWithOrOperatorAndDateTimeLessOrEqualsSoredAsc() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(
+                .filter(Arrays.asList(
                         new FilterInfo("dateTime", Operation.LESS_OR_EQUALS, LocalDateTime.of(2022, 3, 18, 20, 20), FspFilterOperator.OR))
                 )
                 .page(new PageInfo(0, 10))
-                .sort(List.of(new SortInfo("dateTime", SortInfo.Direction.ASC)))
+                .sort(Arrays.asList(new SortInfo("dateTime", SortInfo.Direction.ASC)))
                 .build();
 
         //when
@@ -747,11 +751,11 @@ class OracleFspTest {
     void filterWithOrOperatorAndFloatingPointNumberLessOrEqualsSoredAsc() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(
+                .filter(Arrays.asList(
                         new FilterInfo("floatingPointNumber", Operation.LESS_OR_EQUALS, 25.4, FspFilterOperator.OR))
                 )
                 .page(new PageInfo(0, 10))
-                .sort(List.of(new SortInfo("floatingPointNumber", SortInfo.Direction.ASC)))
+                .sort(Arrays.asList(new SortInfo("floatingPointNumber", SortInfo.Direction.ASC)))
                 .build();
 
         //when
@@ -771,11 +775,11 @@ class OracleFspTest {
     void filterWithOrOperatorAndNumberLessOrEqualsSoredAsc() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(
+                .filter(Arrays.asList(
                         new FilterInfo("number", Operation.LESS_OR_EQUALS, 25, FspFilterOperator.OR))
                 )
                 .page(new PageInfo(0, 10))
-                .sort(List.of(new SortInfo("number", SortInfo.Direction.ASC)))
+                .sort(Arrays.asList(new SortInfo("number", SortInfo.Direction.ASC)))
                 .build();
 
         //when
@@ -796,11 +800,11 @@ class OracleFspTest {
     void filterWithOrOperatorAndDateTimeGreaterOrEqualsSoredDesc() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(
+                .filter(Arrays.asList(
                         new FilterInfo("dateTime", Operation.GREATER_OR_EQUALS, LocalDateTime.of(2022, 2, 1, 15, 15), FspFilterOperator.OR)
                 ))
                 .page(new PageInfo(0, 10))
-                .sort(List.of(new SortInfo("dateTime", SortInfo.Direction.DESC)))
+                .sort(Arrays.asList(new SortInfo("dateTime", SortInfo.Direction.DESC)))
                 .build();
 
         //when
@@ -820,11 +824,11 @@ class OracleFspTest {
     void filterWithOrOperatorAndDateGreaterOrEqualsSoredDesc() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(
+                .filter(Arrays.asList(
                         new FilterInfo("date", Operation.GREATER_OR_EQUALS, LocalDate.of(2022, 2, 1), FspFilterOperator.OR)
                 ))
                 .page(new PageInfo(0, 10))
-                .sort(List.of(new SortInfo("date", SortInfo.Direction.DESC)))
+                .sort(Arrays.asList(new SortInfo("date", SortInfo.Direction.DESC)))
                 .build();
 
         //when
@@ -844,11 +848,11 @@ class OracleFspTest {
     void filterWithOrOperatorAndFloatingPointNumberGreaterOrEqualsSoredDesc() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(
+                .filter(Arrays.asList(
                         new FilterInfo("floatingPointNumber", Operation.GREATER_OR_EQUALS, 13.5, FspFilterOperator.OR)
                 ))
                 .page(new PageInfo(0, 10))
-                .sort(List.of(new SortInfo("floatingPointNumber", SortInfo.Direction.DESC)))
+                .sort(Arrays.asList(new SortInfo("floatingPointNumber", SortInfo.Direction.DESC)))
                 .build();
 
         //when
@@ -869,11 +873,11 @@ class OracleFspTest {
     void filterWithOrOperatorAndNumberGreaterOrEqualsSoredDesc() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(
+                .filter(Arrays.asList(
                         new FilterInfo("number", Operation.GREATER_OR_EQUALS, 13, FspFilterOperator.OR)
                 ))
                 .page(new PageInfo(0, 10))
-                .sort(List.of(new SortInfo("number", SortInfo.Direction.DESC)))
+                .sort(Arrays.asList(new SortInfo("number", SortInfo.Direction.DESC)))
                 .build();
 
         //when
@@ -894,7 +898,7 @@ class OracleFspTest {
     void filterWithNumberIn() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("number", Operation.IN, List.of(12, 13))))
+                .filter(Arrays.asList(new FilterInfo("number", Operation.IN, Arrays.asList(12, 13))))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -914,7 +918,7 @@ class OracleFspTest {
     void filterWithFloatingPointNumberIn() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("floatingPointNumber", Operation.IN, List.of(12.5, 13.5))))
+                .filter(Arrays.asList(new FilterInfo("floatingPointNumber", Operation.IN, Arrays.asList(12.5, 13.5))))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -934,7 +938,7 @@ class OracleFspTest {
     void filterWithTextIn() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("text", Operation.IN, List.of("some text", "a some lorem"))))
+                .filter(Arrays.asList(new FilterInfo("text", Operation.IN, Arrays.asList("some text", "a some lorem"))))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -954,7 +958,7 @@ class OracleFspTest {
     void filterWithDataTimeIn() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("dateTime", Operation.IN, List.of(LocalDateTime.of(2022, 3, 15, 1, 1), LocalDateTime.of(2022, 3, 18, 20, 20)))))
+                .filter(Arrays.asList(new FilterInfo("dateTime", Operation.IN, Arrays.asList(LocalDateTime.of(2022, 3, 15, 1, 1), LocalDateTime.of(2022, 3, 18, 20, 20)))))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -974,7 +978,7 @@ class OracleFspTest {
     void filterWithDateIn() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("date", Operation.IN, List.of(LocalDate.of(2022, 3, 15), LocalDate.of(2022, 3, 18)))))
+                .filter(Arrays.asList(new FilterInfo("date", Operation.IN, Arrays.asList(LocalDate.of(2022, 3, 15), LocalDate.of(2022, 3, 18)))))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -995,10 +999,10 @@ class OracleFspTest {
     void filterWithOrOperatorAndDateTimeLessThanSoredAsc() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(
+                .filter(Arrays.asList(
                         new FilterInfo("dateTime", Operation.LESS_THAN, LocalDateTime.of(2022, 3, 18, 20, 20), FspFilterOperator.OR)))
                 .page(new PageInfo(0, 10))
-                .sort(List.of(new SortInfo("dateTime", SortInfo.Direction.ASC)))
+                .sort(Arrays.asList(new SortInfo("dateTime", SortInfo.Direction.ASC)))
                 .build();
 
         //when
@@ -1018,10 +1022,10 @@ class OracleFspTest {
     void filterWithOrOperatorAndDateLessThanSoredAsc() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(
+                .filter(Arrays.asList(
                         new FilterInfo("date", Operation.LESS_THAN, LocalDate.of(2022, 3, 18), FspFilterOperator.OR)))
                 .page(new PageInfo(0, 10))
-                .sort(List.of(new SortInfo("date", SortInfo.Direction.ASC)))
+                .sort(Arrays.asList(new SortInfo("date", SortInfo.Direction.ASC)))
                 .build();
 
         //when
@@ -1041,10 +1045,10 @@ class OracleFspTest {
     void filterWithOrOperatorAndNumberLessThanSoredAsc() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(
+                .filter(Arrays.asList(
                         new FilterInfo("number", Operation.LESS_THAN, 25, FspFilterOperator.OR)))
                 .page(new PageInfo(0, 10))
-                .sort(List.of(new SortInfo("number", SortInfo.Direction.ASC)))
+                .sort(Arrays.asList(new SortInfo("number", SortInfo.Direction.ASC)))
                 .build();
 
         //when
@@ -1063,10 +1067,10 @@ class OracleFspTest {
     void filterWithOrOperatorAndFloatingPointNumberLessThanSoredAsc() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(
+                .filter(Arrays.asList(
                         new FilterInfo("floatingPointNumber", Operation.LESS_THAN, 25.4, FspFilterOperator.OR)))
                 .page(new PageInfo(0, 10))
-                .sort(List.of(new SortInfo("floatingPointNumber", SortInfo.Direction.ASC)))
+                .sort(Arrays.asList(new SortInfo("floatingPointNumber", SortInfo.Direction.ASC)))
                 .build();
 
         //when
@@ -1085,11 +1089,11 @@ class OracleFspTest {
     void filterWithOrOperatorAndDateTimeGreaterThanSoredDesc() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(
+                .filter(Arrays.asList(
                         new FilterInfo("dateTime", Operation.GREATER_THAN, "2022-03-15T00:00", FspFilterOperator.OR)
                 ))
                 .page(new PageInfo(0, 10))
-                .sort(List.of(new SortInfo("dateTime", SortInfo.Direction.DESC)))
+                .sort(Arrays.asList(new SortInfo("dateTime", SortInfo.Direction.DESC)))
                 .build();
 
         //when
@@ -1108,11 +1112,11 @@ class OracleFspTest {
     void filterWithOrOperatorAndDateGreaterThanSoredDesc() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(
+                .filter(Arrays.asList(
                         new FilterInfo("date", Operation.GREATER_THAN, LocalDate.of(2022, 3, 15), FspFilterOperator.OR)
                 ))
                 .page(new PageInfo(0, 10))
-                .sort(List.of(new SortInfo("date", SortInfo.Direction.DESC)))
+                .sort(Arrays.asList(new SortInfo("date", SortInfo.Direction.DESC)))
                 .build();
 
         //when
@@ -1130,11 +1134,11 @@ class OracleFspTest {
     void filterWithOrOperatorAndFloatNumberGreaterThanSoredDesc() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(
+                .filter(Arrays.asList(
                         new FilterInfo("floatNumber", Operation.GREATER_THAN, 5.5f, FspFilterOperator.OR)
                 ))
                 .page(new PageInfo(0, 10))
-                .sort(List.of(new SortInfo("floatNumber", SortInfo.Direction.DESC)))
+                .sort(Arrays.asList(new SortInfo("floatNumber", SortInfo.Direction.DESC)))
                 .build();
 
         //when
@@ -1153,11 +1157,11 @@ class OracleFspTest {
     void filterWithOrOperatorAndLongValueGreaterThanSoredDesc() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(
+                .filter(Arrays.asList(
                         new FilterInfo("longValue", Operation.GREATER_THAN, 19L, FspFilterOperator.OR)
                 ))
                 .page(new PageInfo(0, 10))
-                .sort(List.of(new SortInfo("longValue", SortInfo.Direction.DESC)))
+                .sort(Arrays.asList(new SortInfo("longValue", SortInfo.Direction.DESC)))
                 .build();
 
         //when
@@ -1176,11 +1180,11 @@ class OracleFspTest {
     void filterWithOrOperatorAndTimestampGreaterThanSoredDesc() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(
+                .filter(Arrays.asList(
                         new FilterInfo("timestamp", Operation.GREATER_THAN, "2022-01-09 15:01:25", FspFilterOperator.OR)
                 ))
                 .page(new PageInfo(0, 10))
-                .sort(List.of(new SortInfo("timestamp", SortInfo.Direction.DESC)))
+                .sort(Arrays.asList(new SortInfo("timestamp", SortInfo.Direction.DESC)))
                 .build();
 
         //when
@@ -1200,11 +1204,11 @@ class OracleFspTest {
     void filterWithOrOperatorAndNumberGreaterThanSoredDesc() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(
+                .filter(Arrays.asList(
                         new FilterInfo("number", Operation.GREATER_THAN, 13, FspFilterOperator.OR)
                 ))
                 .page(new PageInfo(0, 10))
-                .sort(List.of(new SortInfo("number", SortInfo.Direction.DESC)))
+                .sort(Arrays.asList(new SortInfo("number", SortInfo.Direction.DESC)))
                 .build();
 
         //when
@@ -1223,11 +1227,11 @@ class OracleFspTest {
     void filterWithOrOperatorAndFloatingPointNumberGreaterThanSoredDesc() {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(
+                .filter(Arrays.asList(
                         new FilterInfo("floatingPointNumber", Operation.GREATER_THAN, 13.5, FspFilterOperator.OR)
                 ))
                 .page(new PageInfo(0, 10))
-                .sort(List.of(new SortInfo("floatingPointNumber", SortInfo.Direction.DESC)))
+                .sort(Arrays.asList(new SortInfo("floatingPointNumber", SortInfo.Direction.DESC)))
                 .build();
 
         //when
@@ -1246,7 +1250,7 @@ class OracleFspTest {
     void shouldThrowsFilteringException() throws FilteringException {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("text", Operation.GREATER_THAN, "test")))
+                .filter(Arrays.asList(new FilterInfo("text", Operation.GREATER_THAN, "test")))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -1262,7 +1266,7 @@ class OracleFspTest {
     void shouldThrowsFilteringExceptionWhenEqualsObject() throws FilteringException {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo("innerObj", Operation.EQUALS, "test")))
+                .filter(Arrays.asList(new FilterInfo("innerObj", Operation.EQUALS, "test")))
                 .page(new PageInfo(0, 10))
                 .build();
 
@@ -1279,8 +1283,8 @@ class OracleFspTest {
     void shouldReturnFspForInnerObjectEquals(String value) throws FilteringException {
         //given
         FspRequest fspRequest = FspRequest.builder()
-                .filter(List.of(new FilterInfo(value, Operation.IN, List.of("a", "b"))))
-                .sort(List.of(new SortInfo("innerObj.innerText", SortInfo.Direction.DESC)))
+                .filter(Arrays.asList(new FilterInfo(value, Operation.IN, Arrays.asList("a", "b"))))
+                .sort(Arrays.asList(new SortInfo("innerObj.innerText", SortInfo.Direction.DESC)))
                 .page(new PageInfo(0, 10))
                 .build();
 

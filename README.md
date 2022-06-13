@@ -11,7 +11,7 @@ moves responsibility of filtering logic to FrontEnd Layer
 
 ### Project requirements
 + java 8+
-+ spring-boot 2+
++ spring-boot 2.0.5+
 
 ---
 ## How to Use

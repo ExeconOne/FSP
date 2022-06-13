@@ -9,6 +9,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +22,7 @@ abstract class AbstractPredicate<T> {
         List<String> filterFields = new ArrayList<>();
         Path field;
         if (filter.getBy().contains(".")) {
-            filterFields.addAll(List.of(filter.getBy().split("\\.")));
+            filterFields.addAll(Arrays.asList(filter.getBy().split("\\.")));
         }
 
         if (!filterFields.isEmpty()) {

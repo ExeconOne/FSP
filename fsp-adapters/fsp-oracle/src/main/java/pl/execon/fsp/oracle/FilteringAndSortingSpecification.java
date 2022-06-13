@@ -1,12 +1,12 @@
 package pl.execon.fsp.oracle;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import pl.execon.fsp.core.FspRequest;
 import pl.execon.fsp.core.SortInfo;
+
+import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -28,7 +28,7 @@ class FilteringAndSortingSpecification {
                 ? Sort.unsorted()
                 : Sort.by(fspRequest.getSort().stream()
                 .map(this::asOrder)
-                .toList());
+                .collect(Collectors.toList()));
     }
 
     private PageRequest extractPageRequest(FspRequest fspRequest) {

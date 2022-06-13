@@ -14,20 +14,18 @@
     </modules>
 
     <properties>
-        <java.version>17</java.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!--        MODULES VERSIONS  -->
         <fsp-model.version>0.1.0</fsp-model.version>
         <fsp-mongo.version>0.1.0</fsp-mongo.version>
         <!--        LIBRARIES VERSIONS  -->
         <lombok.version>1.18.24</lombok.version>
-        <spring.data.common.version>2.6.3</spring.data.common.version>
         <!--        TEST LIBRARIES VERSIONS  -->
         <junit.version>5.8.2</junit.version>
-        <mockito.version>4.5.1</mockito.version>
-        <spring-boot-test.version>2.6.7</spring-boot-test.version>
+        <spring-boot.version>2.0.5.RELEASE</spring-boot.version>
     </properties>
 
     <dependencyManagement>
@@ -50,11 +48,6 @@
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-commons</artifactId>
-                <version>${spring.data.common.version}</version>
-            </dependency>
             <!--        TEST LIBRARIES  -->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
@@ -64,7 +57,19 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-test</artifactId>
-                <version>${spring-boot-test.version}</version>
+                <version>${spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-jpa</artifactId>
+                <version>${spring-boot.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-mongodb</artifactId>
+                <version>${spring-boot.version}</version>
+                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

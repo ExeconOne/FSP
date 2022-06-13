@@ -24,7 +24,7 @@ class MongoFspImpl<T> implements MongoFsp<T> {
             return new FspResponse<>(list);
         }
 
-        long count = mongoTemplate.count(Query.of(query).limit(-1).skip(-1), documentClass);
+        long count = mongoTemplate.count(query.limit(-1).skip(-1), documentClass);
         return new FspResponse<>(request, list, count);
     }
 }

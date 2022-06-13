@@ -8,8 +8,19 @@ import pl.execon.fsp.core.FspResponse;
 
 import java.util.List;
 
+/**
+ * This is an interface which delivers FSP functionality for relational databases.
+ *
+ * @param <T> type of consumed object
+ */
 public interface OracleFsp<T> extends JpaSpecificationExecutor<T> {
 
+    /**
+     * Method which allows filtering, paging and sorting for given T param entity.
+     *
+     * @param fspRequest request with filter, paging and sorting
+     * @return result of given request for given fspRequest
+     */
     default FspResponse<T> findFsp(FspRequest fspRequest) {
         Specification<T> specification = new FilteringSpecification<>(fspRequest);
         FilteringAndSortingSpecification filteringAndSortingSpecification = new FilteringAndSortingSpecification(fspRequest);
