@@ -25,7 +25,7 @@
         <lombok.version>1.18.24</lombok.version>
         <!--        TEST LIBRARIES VERSIONS  -->
         <junit.version>5.8.2</junit.version>
-        <spring-boot.version>2.0.5.RELEASE</spring-boot.version>
+        <spring-boot.version>2.0.0.RELEASE</spring-boot.version>
     </properties>
 
     <dependencyManagement>

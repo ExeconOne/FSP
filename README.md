@@ -9,9 +9,9 @@ moves responsibility of filtering logic to FrontEnd Layer
 
 ---
 
-### Project requirements
+### Project minimum requirements
 + java 8+
-+ spring-boot 2.0.5+
++ spring-boot 2.0.0+
 
 ---
 ## How to Use
