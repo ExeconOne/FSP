@@ -74,4 +74,36 @@
         </dependencies>
     </dependencyManagement>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>4.1</version>
+                <configuration>
+                    <licenseSets>
+                        <licenseSet>
+                            <multi>
+                                <preamble><![CDATA[This product is dual-licensed under both the MIT and Apache 2.0 License.]]></preamble>
+                                <header>license/MIT.txt</header>
+<!--                                <separator>======================================================================</separator>-->
+<!--                                <header>license/MIT.txt</header>-->
+                            </multi>
+                            <excludes>
+                                <exclude>**/README</exclude>
+                                <exclude>src/test/resources/**</exclude>
+                                <exclude>src/main/resources/**</exclude>
+                                <exclude>pom.xml</exclude>
+                            </excludes>
+                        </licenseSet>
+                    </licenseSets>
+                    <properties>
+                        <owner>EXECON</owner>
+                        <year>2022</year>
+                    </properties>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
