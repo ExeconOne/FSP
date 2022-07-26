@@ -63,12 +63,20 @@ class MongoFspRequestResolver {
                 .collect(Collectors.toList());
     }
 
-    private Criteria joinCriteria(List<Criteria> criteria, Function<Criteria[], Criteria> joiner) {
-        return switch (criteria.size()) {
-            case 0 -> new Criteria();
-            case 1 -> criteria.get(0);
-            default -> joiner.apply(criteria.toArray(new Criteria[]{}));
-        };
+    private Criteria joinCriteria(List<Criteria> criterias, Function<Criteria[], Criteria> joiner) {
+        Criteria criteria = new Criteria();
+        switch (criterias.size()) {
+            case 0:
+                criteria = new Criteria();
+                break;
+            case 1:
+                criteria = criterias.get(0);
+                break;
+            default:
+                criteria = joiner.apply(criterias.toArray(new Criteria[]{}));
+                break;
+        }
+        return criteria;
     }
 
     private void addPaginationAndSorting() {
@@ -76,7 +84,7 @@ class MongoFspRequestResolver {
                 ? Sort.unsorted()
                 : Sort.by(fspRequest.getSort().stream()
                 .map(this::asOrder)
-                .toList());
+                .collect(Collectors.toList()));
 
         if (nonNull(fspRequest.getPage())) {
             query.with(
@@ -105,17 +113,37 @@ class MongoFspRequestResolver {
             value = Date.from(LocalDateTime.parse(value.toString(), DateTimeFormatter.ISO_DATE_TIME).atZone(ZoneId.systemDefault()).toInstant());
         }
 
-        return switch (filterInfo.getOperation()) {
-            case EQUALS -> field.is(value);
-            case NOT_EQUALS -> field.ne(value);
-            case IN -> field.in((List<Object>) value);
-            case NOT_IN -> field.nin((List<Object>) value);
-            case GREATER_THAN -> field.gt(value);
-            case LESS_THAN -> field.lt(value);
-            case GREATER_OR_EQUALS -> field.gte(value);
-            case LESS_OR_EQUALS -> field.lte(value);
-            case CONTAINS -> field.regex(Pattern.compile(value.toString(), Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE));
-        };
+        Criteria criteria = new Criteria();
+        switch (filterInfo.getOperation()) {
+            case EQUALS:
+                criteria = field.is(value);
+                break;
+            case NOT_EQUALS:
+                criteria = field.ne(value);
+                break;
+            case IN:
+                criteria = field.in((List<Object>) value);
+                break;
+            case NOT_IN:
+                criteria = field.nin((List<Object>) value);
+                break;
+            case GREATER_THAN:
+                criteria = field.gt(value);
+                break;
+            case LESS_THAN:
+                criteria = field.lt(value);
+                break;
+            case GREATER_OR_EQUALS:
+                criteria = field.gte(value);
+                break;
+            case LESS_OR_EQUALS:
+                criteria = field.lte(value);
+                break;
+            case CONTAINS:
+                criteria = field.regex(Pattern.compile(value.toString(), Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE));
+                break;
+        }
+        return criteria;
     }
 
     private boolean isValidLocalDateTime(String dateStr) {
