@@ -84,10 +84,14 @@
                     <licenseSets>
                         <licenseSet>
                             <multi>
-                                <preamble><![CDATA[This product is dual-licensed under both the MIT and Apache 2.0 License.]]></preamble>
+                                <preamble><![CDATA[This file Copyright © ${year} ${owner} (https://execon.pl/). All rights reserved.]]></preamble>
+                                <header>license/header.txt</header>
+                                <separator></separator>
                                 <header>license/MIT.txt</header>
-<!--                                <separator>======================================================================</separator>-->
-<!--                                <header>license/MIT.txt</header>-->
+                                <separator></separator>
+                                <header>license/EXECON.txt</header>
+                                <separator></separator>
+                                <header>license/footer.txt</header>
                             </multi>
                             <excludes>
                                 <exclude>**/README</exclude>
@@ -98,7 +102,7 @@
                         </licenseSet>
                     </licenseSets>
                     <properties>
-                        <owner>EXECON</owner>
+                        <owner>Execon One Sp. z o.o.</owner>
                         <year>2022</year>
                     </properties>
                 </configuration>
