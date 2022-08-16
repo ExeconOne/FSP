@@ -74,4 +74,40 @@
         </dependencies>
     </dependencyManagement>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>4.1</version>
+                <configuration>
+                    <licenseSets>
+                        <licenseSet>
+                            <multi>
+                                <preamble><![CDATA[This file Copyright © ${year} ${owner} (https://execon.pl/). All rights reserved.]]></preamble>
+                                <header>license/header.txt</header>
+                                <separator></separator>
+                                <header>license/MIT.txt</header>
+                                <separator></separator>
+                                <header>license/EXECON.txt</header>
+                                <separator></separator>
+                                <header>license/footer.txt</header>
+                            </multi>
+                            <excludes>
+                                <exclude>**/README</exclude>
+                                <exclude>src/test/resources/**</exclude>
+                                <exclude>src/main/resources/**</exclude>
+                                <exclude>pom.xml</exclude>
+                            </excludes>
+                        </licenseSet>
+                    </licenseSets>
+                    <properties>
+                        <owner>Execon One Sp. z o.o.</owner>
+                        <year>2022</year>
+                    </properties>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
