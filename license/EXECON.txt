@@ -1,5 +1,5 @@
 The Execon One License:
 
-    this file and the accompanying materials are made available under the
+    This file and the accompanying materials are made available under the
     terms of the MNA which accompanies this distribution, and
     is available at /license/Execon One End User License Agreement.docx
