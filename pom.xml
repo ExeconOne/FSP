@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>pl.execon.common</groupId>
+    <groupId>pl.execon.commons</groupId>
     <artifactId>fsp</artifactId>
     <packaging>pom</packaging>
     <version>0.1.0</version>
@@ -12,6 +12,32 @@
         <module>fsp-model</module>
         <module>fsp-adapters</module>
     </modules>
+
+    <name>Filter-Sort-Page</name>
+    <description>FSP filters and sorts objects in a database using the easy-to-build requests, which can be exposed as REST endpoint.
+    </description>
+    <url>https://github.com/ExeconOne/FSP-BE</url>
+
+    <developers>
+        <developer>
+            <name>Michal Bielecki</name>
+            <email>michal.bielecki@execon.pl</email>
+            <organization>Execon</organization>
+            <organizationUrl>http://www.execon.pl/</organizationUrl>
+        </developer>
+        <developer>
+            <name>Lukasz Pietrzykowski</name>
+            <email>lukasz.pietrzykowski@execon.pl</email>
+            <organization>Execon</organization>
+            <organizationUrl>http://www.execon.pl/</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/ExeconOne/FSP-BE.git</connection>
+        <developerConnection>scm:git:ssh://github.com:ExeconOne/FSP-BE.git</developerConnection>
+        <url>http://github.com/ExeconOne/FSP-BE/tree/main</url>
+    </scm>
 
     <properties>
         <java.version>1.8</java.version>
@@ -32,12 +58,12 @@
         <dependencies>
             <!--        MODULES  -->
             <dependency>
-                <groupId>pl.execon.common</groupId>
+                <groupId>pl.execon.commons</groupId>
                 <artifactId>fsp-model</artifactId>
                 <version>${fsp-model.version}</version>
             </dependency>
             <dependency>
-                <groupId>pl.execon.common</groupId>
+                <groupId>pl.execon.commons</groupId>
                 <artifactId>fsp-mongo</artifactId>
                 <version>${fsp-mongo.version}</version>
             </dependency>
@@ -74,8 +100,25 @@
         </dependencies>
     </dependencyManagement>
 
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
@@ -84,7 +127,8 @@
                     <licenseSets>
                         <licenseSet>
                             <multi>
-                                <preamble><![CDATA[This file Copyright © ${year} ${owner} (https://execon.pl/). All rights reserved.]]></preamble>
+                                <preamble>
+                                    <![CDATA[This file Copyright © ${year} ${owner} (https://execon.pl/). All rights reserved.]]></preamble>
                                 <header>license/header.txt</header>
                                 <separator></separator>
                                 <header>license/MIT.txt</header>
