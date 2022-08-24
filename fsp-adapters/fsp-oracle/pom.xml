@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>fsp</artifactId>
-        <groupId>pl.execon.common</groupId>
+        <groupId>pl.execon.commons</groupId>
         <version>0.1.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
@@ -14,7 +14,7 @@
     <dependencies>
         <!--        FSP-->
         <dependency>
-            <groupId>pl.execon.common</groupId>
+            <groupId>pl.execon.commons</groupId>
             <artifactId>fsp-model</artifactId>
             <version>0.1.0</version>
         </dependency>

@@ -3,7 +3,7 @@ Add `fsp-relational` dependency to your project
 ```xml
 
 <dependency>
-    <groupId>pl.execon.common</groupId>
+    <groupId>pl.execon.commons</groupId>
     <artifactId>fsp-relational</artifactId>
     <version>0.1.0</version>
 </dependency>
