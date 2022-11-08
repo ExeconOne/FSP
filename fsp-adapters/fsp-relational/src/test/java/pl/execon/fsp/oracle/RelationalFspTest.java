@@ -75,7 +75,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DataJpaTest
 @ContextConfiguration(classes = {FspTestRepository.class, FspInnerObjTestRepository.class})
 @EnableAutoConfiguration
-class OracleFspTest {
+class RelationalFspTest {
 
     @Autowired
     private FspTestRepository repository;
