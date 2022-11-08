@@ -14,7 +14,7 @@
 
     <modules>
         <module>fsp-mongo</module>
-        <module>fsp-oracle</module>
+        <module>fsp-relational</module>
     </modules>
 
 </project>
