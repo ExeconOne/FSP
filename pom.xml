@@ -129,13 +129,13 @@
                             <multi>
                                 <preamble>
                                     <![CDATA[This file Copyright © ${year} ${owner} (https://execon.pl/). All rights reserved.]]></preamble>
-                                <header>license/header.txt</header>
+                                <header>licenses/header.txt</header>
                                 <separator></separator>
-                                <header>license/MIT.txt</header>
+                                <header>licenses/APACHE.txt</header>
                                 <separator></separator>
-                                <header>license/EXECON.txt</header>
+                                <header>licenses/EXECON.txt</header>
                                 <separator></separator>
-                                <header>license/footer.txt</header>
+                                <header>licenses/footer.txt</header>
                             </multi>
                             <excludes>
                                 <exclude>**/README</exclude>

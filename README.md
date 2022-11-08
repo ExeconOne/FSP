@@ -30,8 +30,9 @@ This section describes how to use FSP with different databases.
 ---
 
 ## License
-FSP is Open Source software released under the
-https://www.apache.org/licenses/LICENSE-2.0.html [Apache 2.0 license].
+FSP is Open Source software released under dual-license, both the
+https://www.apache.org/licenses/LICENSE-2.0.html [Apache 2.0 license] and
+https://github.com/ExeconOne/FSP/license/Execon_One_EULA.docx [Execon One license]
 
 ---
 ## [Changelog](changelog.md)
