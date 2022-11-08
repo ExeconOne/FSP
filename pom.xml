@@ -16,7 +16,7 @@
     <name>Filter-Sort-Page</name>
     <description>FSP filters and sorts objects in a database using the easy-to-build requests, which can be exposed as REST endpoint.
     </description>
-    <url>https://github.com/ExeconOne/FSP-BE</url>
+    <url>https://github.com/ExeconOne/FSP</url>
 
     <developers>
         <developer>
@@ -32,11 +32,22 @@
             <organizationUrl>http://www.execon.pl/</organizationUrl>
         </developer>
     </developers>
+    
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+        <license>
+            <name>Execon One License</name>
+            <url>https://github.com/ExeconOne/FSP/blob/main/licenses/Execon_One_EULA.docx</url>
+        </license>
+    </licenses>
 
     <scm>
-        <connection>scm:git:git://github.com/ExeconOne/FSP-BE.git</connection>
-        <developerConnection>scm:git:ssh://github.com:ExeconOne/FSP-BE.git</developerConnection>
-        <url>http://github.com/ExeconOne/FSP-BE/tree/main</url>
+        <connection>scm:git:git://github.com/ExeconOne/FSP.git</connection>
+        <developerConnection>scm:git:ssh://github.com:ExeconOne/FSP.git</developerConnection>
+        <url>http://github.com/ExeconOne/FSP/tree/main</url>
     </scm>
 
     <properties>
