@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>fsp-oracle</artifactId>
+    <artifactId>fsp-relational</artifactId>
     <dependencies>
         <!--        FSP-->
         <dependency>
