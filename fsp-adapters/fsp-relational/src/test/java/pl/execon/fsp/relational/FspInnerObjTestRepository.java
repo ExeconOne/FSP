@@ -37,13 +37,11 @@
  *
  * Any modifications to this file must keep this entire header intact.
  */
-package pl.execon.fsp.oracle.exception;
+package pl.execon.fsp.relational;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-@Getter
-@AllArgsConstructor
-public class FilteringException extends RuntimeException {
-    private final String message;
+@Repository
+public interface FspInnerObjTestRepository extends JpaRepository<InnerTestObj, Long> {
 }

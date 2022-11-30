@@ -37,23 +37,13 @@
  *
  * Any modifications to this file must keep this entire header intact.
  */
-package pl.execon.fsp.oracle;
+package pl.execon.fsp.relational.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
 
 @Getter
-@Setter
 @AllArgsConstructor
-@Entity
-@NoArgsConstructor
-public class InnerTestObj {
-    @Id
-    private Long id;
-    private String innerText;
+public class FilteringException extends RuntimeException {
+    private final String message;
 }

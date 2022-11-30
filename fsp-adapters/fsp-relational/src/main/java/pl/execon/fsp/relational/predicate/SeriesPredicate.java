@@ -37,7 +37,7 @@
  *
  * Any modifications to this file must keep this entire header intact.
  */
-package pl.execon.fsp.oracle.predicate;
+package pl.execon.fsp.relational.predicate;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Path;

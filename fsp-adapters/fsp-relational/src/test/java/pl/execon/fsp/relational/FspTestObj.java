@@ -37,42 +37,46 @@
  *
  * Any modifications to this file must keep this entire header intact.
  */
-package pl.execon.fsp.oracle.predicate;
+package pl.execon.fsp.relational;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
-class GreaterThanPredicate<T> extends AbstractPredicate<T> {
+@Getter
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+public class FspTestObj {
 
-    @Override
-    protected Predicate createPredicate(Path field, Class fieldClass, Object target, CriteriaBuilder criteriaBuilder) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-        if (fieldClass.equals(LocalDateTime.class))
-            return criteriaBuilder.greaterThan(field, LocalDateTime.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+    private String text;
+    private int number;
+    private LocalDateTime dateTime;
+    private double floatingPointNumber;
+    private LocalDate date;
+    private float floatNumber;
+    private boolean isBlue;
+    private Colour colour;
+    private long longValue;
+    private Timestamp timestamp;
+    @OneToOne
+    private InnerTestObj innerObj;
 
-        if (fieldClass.equals(Timestamp.class))
-            return criteriaBuilder.greaterThan(field, Timestamp.valueOf(LocalDateTime.parse(target.toString(), LOCAL_DATE_TIME_FORMATTER)));
 
-        if (fieldClass.equals(LocalDate.class))
-            return criteriaBuilder.greaterThan(field, LocalDate.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE));
-
-        if (fieldClass.equals(Long.class) || fieldClass.equals(long.class))
-            return criteriaBuilder.greaterThan(field, Long.valueOf(target.toString()));
-
-        if (fieldClass.equals(Integer.class) || fieldClass.equals(int.class))
-            return criteriaBuilder.greaterThan(field, Integer.valueOf(target.toString()));
-
-        if (fieldClass.equals(Double.class) || fieldClass.equals(double.class))
-            return criteriaBuilder.greaterThan(field, Double.valueOf(target.toString()));
-
-        if (fieldClass.equals(Float.class) || fieldClass.equals(float.class))
-            return criteriaBuilder.greaterThan(field, Float.valueOf(target.toString()));
-
-        return null;
-    }
+  public enum Colour{
+      BLUE, RED, GREEN
+  }
 }

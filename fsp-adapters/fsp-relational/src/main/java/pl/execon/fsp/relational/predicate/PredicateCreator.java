@@ -37,7 +37,7 @@
  *
  * Any modifications to this file must keep this entire header intact.
  */
-package pl.execon.fsp.oracle.predicate;
+package pl.execon.fsp.relational.predicate;
 
 import lombok.AllArgsConstructor;
 import pl.execon.fsp.core.FilterInfo;

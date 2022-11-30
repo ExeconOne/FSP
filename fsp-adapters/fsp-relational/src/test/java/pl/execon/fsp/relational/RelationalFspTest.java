@@ -37,7 +37,7 @@
  *
  * Any modifications to this file must keep this entire header intact.
  */
-package pl.execon.fsp.oracle;
+package pl.execon.fsp.relational;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -57,7 +57,7 @@ import pl.execon.fsp.core.FspResponse;
 import pl.execon.fsp.core.Operation;
 import pl.execon.fsp.core.PageInfo;
 import pl.execon.fsp.core.SortInfo;
-import pl.execon.fsp.oracle.exception.FilteringException;
+import pl.execon.fsp.relational.exception.FilteringException;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;

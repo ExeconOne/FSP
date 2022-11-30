@@ -37,40 +37,42 @@
  *
  * Any modifications to this file must keep this entire header intact.
  */
-package pl.execon.fsp.oracle;
+package pl.execon.fsp.relational.predicate;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import pl.execon.fsp.core.FspRequest;
-import pl.execon.fsp.core.FspResponse;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-import java.util.List;
+class GreaterThanPredicate<T> extends AbstractPredicate<T> {
 
-/**
- * This is an interface which delivers FSP functionality for relational databases.
- *
- * @param <T> type of consumed object
- */
-public interface RelationalFsp<T> extends JpaSpecificationExecutor<T> {
+    @Override
+    protected Predicate createPredicate(Path field, Class fieldClass, Object target, CriteriaBuilder criteriaBuilder) {
 
-    /**
-     * Method which allows filtering, paging and sorting for given T param entity.
-     *
-     * @param fspRequest request with filter, paging and sorting
-     * @return result of given request for given fspRequest
-     */
-    default FspResponse<T> findFsp(FspRequest fspRequest) {
-        Specification<T> specification = new FilteringSpecification<>(fspRequest);
-        FilteringAndSortingSpecification filteringAndSortingSpecification = new FilteringAndSortingSpecification(fspRequest);
+        if (fieldClass.equals(LocalDateTime.class))
+            return criteriaBuilder.greaterThan(field, LocalDateTime.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
 
-        if (!fspRequest.hasPageInfo()) {
-            List<T> list = findAll(specification, filteringAndSortingSpecification.getSort());
-            return new FspResponse<>(list);
-        }
+        if (fieldClass.equals(Timestamp.class))
+            return criteriaBuilder.greaterThan(field, Timestamp.valueOf(LocalDateTime.parse(target.toString(), LOCAL_DATE_TIME_FORMATTER)));
 
-        Page<T> listWithPagination = findAll(specification, filteringAndSortingSpecification.getPageRequest());
-        long count = count(specification);
-        return new FspResponse<>(fspRequest, listWithPagination.getContent(), count);
+        if (fieldClass.equals(LocalDate.class))
+            return criteriaBuilder.greaterThan(field, LocalDate.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE));
+
+        if (fieldClass.equals(Long.class) || fieldClass.equals(long.class))
+            return criteriaBuilder.greaterThan(field, Long.valueOf(target.toString()));
+
+        if (fieldClass.equals(Integer.class) || fieldClass.equals(int.class))
+            return criteriaBuilder.greaterThan(field, Integer.valueOf(target.toString()));
+
+        if (fieldClass.equals(Double.class) || fieldClass.equals(double.class))
+            return criteriaBuilder.greaterThan(field, Double.valueOf(target.toString()));
+
+        if (fieldClass.equals(Float.class) || fieldClass.equals(float.class))
+            return criteriaBuilder.greaterThan(field, Float.valueOf(target.toString()));
+
+        return null;
     }
 }

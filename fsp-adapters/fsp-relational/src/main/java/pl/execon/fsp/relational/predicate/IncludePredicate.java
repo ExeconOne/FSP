@@ -37,53 +37,19 @@
  *
  * Any modifications to this file must keep this entire header intact.
  */
-package pl.execon.fsp.oracle;
+package pl.execon.fsp.relational.predicate;
 
-import lombok.Getter;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import pl.execon.fsp.core.FspRequest;
-import pl.execon.fsp.core.SortInfo;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
 
-import java.util.stream.Collectors;
-
-import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
-import static pl.execon.fsp.core.FspRequest.INITIAL_PAGE_NUMBER;
-
-@Getter
-class FilteringAndSortingSpecification {
-
-    private final Sort sort;
-    private final PageRequest pageRequest;
-
-    public FilteringAndSortingSpecification(FspRequest fspRequest) {
-        this.sort = extractSort(fspRequest);
-        this.pageRequest = extractPageRequest(fspRequest);
-    }
-
-    private Sort extractSort(FspRequest fspRequest) {
-        return isNull(fspRequest.getSort())
-                ? Sort.unsorted()
-                : Sort.by(fspRequest.getSort().stream()
-                .map(this::asOrder)
-                .collect(Collectors.toList()));
-    }
-
-    private PageRequest extractPageRequest(FspRequest fspRequest) {
-        if (nonNull(fspRequest.getPage())) {
-            return PageRequest.of(
-                    fspRequest.getPage().getNumber(),
-                    fspRequest.getPage().getSize() - INITIAL_PAGE_NUMBER,
-                    sort);
+class IncludePredicate<T> extends AbstractPredicate<T> {
+    @Override
+    protected Predicate createPredicate(Path field, Class fieldClass, Object target, CriteriaBuilder criteriaBuilder) {
+        if (fieldClass.equals(String.class)) {
+            return criteriaBuilder.like(criteriaBuilder.upper(field), "%" + target.toString().toUpperCase() + "%");
         } else {
-            return null;
+            return criteriaBuilder.like(criteriaBuilder.upper(field.as(String.class)), "%" + target.toString().toUpperCase() + "%");
         }
-    }
-
-    private Sort.Order asOrder(SortInfo sortInfo) {
-        return SortInfo.Direction.DESC.equals(sortInfo.getDirection())
-                ? Sort.Order.desc(sortInfo.getBy())
-                : Sort.Order.asc(sortInfo.getBy());
     }
 }

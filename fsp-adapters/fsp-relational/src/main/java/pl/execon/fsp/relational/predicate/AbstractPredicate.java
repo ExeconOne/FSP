@@ -37,52 +37,50 @@
  *
  * Any modifications to this file must keep this entire header intact.
  */
-package pl.execon.fsp.oracle.predicate;
+package pl.execon.fsp.relational.predicate;
+
+import pl.execon.fsp.core.FilterInfo;
+import pl.execon.fsp.relational.exception.FilteringException;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import javax.persistence.criteria.Root;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
-import static org.apache.commons.lang3.EnumUtils.getEnum;
+abstract class AbstractPredicate<T> {
 
-class EqualsPredicate<T> extends AbstractPredicate<T> {
+    private static final String EXCEPTION_MESSAGE = "Unsupported field/operator combination: %s(%s) with operator %s";
+    static final DateTimeFormatter LOCAL_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    @Override
-    protected Predicate createPredicate(Path field, Class fieldClass, Object target, CriteriaBuilder criteriaBuilder) {
-        if (fieldClass.equals(String.class))
-            return criteriaBuilder.equal(field, target.toString());
+    public Predicate of(Root<T> root, CriteriaBuilder criteriaBuilder, FilterInfo filter) {
+        List<String> filterFields = new ArrayList<>();
+        Path field;
+        if (filter.getBy().contains(".")) {
+            filterFields.addAll(Arrays.asList(filter.getBy().split("\\.")));
+        }
 
-        if (fieldClass.equals(Long.class) || fieldClass.equals(long.class))
-            return criteriaBuilder.equal(field, Long.valueOf(target.toString()));
+        if (!filterFields.isEmpty()) {
+            field = root.get(filterFields.get(0));
+            filterFields.remove(filterFields.get(0));
+            for (String filterField : filterFields) {
+               field = field.get(filterField);
+            }
+        } else {
+            field  = root.get(filter.getBy());
+        }
 
-        if (fieldClass.equals(Integer.class) || fieldClass.equals(int.class))
-            return criteriaBuilder.equal(field, Integer.valueOf(target.toString()));
+        Class fieldClass = field.getJavaType();
+        Object target = filter.getValue();
 
-        if (fieldClass.equals(Double.class) || fieldClass.equals(double.class))
-            return criteriaBuilder.equal(field, Double.valueOf(target.toString()));
-
-        if (fieldClass.equals(Float.class) || fieldClass.equals(float.class))
-            return criteriaBuilder.equal(field, Float.valueOf(target.toString()));
-
-        if (fieldClass.isEnum())
-            return criteriaBuilder.equal(field, (getEnum(fieldClass, target.toString())));
-
-        if (fieldClass.equals(Boolean.class) || fieldClass.equals(boolean.class))
-            return criteriaBuilder.equal(field, Boolean.parseBoolean(target.toString()));
-
-        if (fieldClass.equals(LocalDateTime.class))
-            return criteriaBuilder.equal(field, LocalDateTime.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-
-        if (fieldClass.equals(LocalDate.class))
-            return criteriaBuilder.equal(field, LocalDate.parse(target.toString(), DateTimeFormatter.ISO_LOCAL_DATE));
-
-        if (fieldClass.equals(Timestamp.class))
-            return criteriaBuilder.equal(field, Timestamp.valueOf(LocalDateTime.parse(target.toString(), LOCAL_DATE_TIME_FORMATTER)));
-
-        return null;
+        return Optional.ofNullable(createPredicate(field, fieldClass, target, criteriaBuilder))
+                .orElseThrow(() -> new FilteringException(String.format(EXCEPTION_MESSAGE, filter.getBy(), fieldClass, filter.getOperator())));
     }
+
+    protected abstract Predicate createPredicate(Path field, Class fieldClass, Object target, CriteriaBuilder criteriaBuilder);
+
 }

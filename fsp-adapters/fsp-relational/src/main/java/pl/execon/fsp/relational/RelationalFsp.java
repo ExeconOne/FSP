@@ -37,46 +37,40 @@
  *
  * Any modifications to this file must keep this entire header intact.
  */
-package pl.execon.fsp.oracle;
+package pl.execon.fsp.relational;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import pl.execon.fsp.core.FspRequest;
+import pl.execon.fsp.core.FspResponse;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 
-@Getter
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
-public class FspTestObj {
+/**
+ * This is an interface which delivers FSP functionality for relational databases.
+ *
+ * @param <T> type of consumed object
+ */
+public interface RelationalFsp<T> extends JpaSpecificationExecutor<T> {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    /**
+     * Method which allows filtering, paging and sorting for given T param entity.
+     *
+     * @param fspRequest request with filter, paging and sorting
+     * @return result of given request for given fspRequest
+     */
+    default FspResponse<T> findFsp(FspRequest fspRequest) {
+        Specification<T> specification = new FilteringSpecification<>(fspRequest);
+        FilteringAndSortingSpecification filteringAndSortingSpecification = new FilteringAndSortingSpecification(fspRequest);
 
-    private String text;
-    private int number;
-    private LocalDateTime dateTime;
-    private double floatingPointNumber;
-    private LocalDate date;
-    private float floatNumber;
-    private boolean isBlue;
-    private Colour colour;
-    private long longValue;
-    private Timestamp timestamp;
-    @OneToOne
-    private InnerTestObj innerObj;
+        if (!fspRequest.hasPageInfo()) {
+            List<T> list = findAll(specification, filteringAndSortingSpecification.getSort());
+            return new FspResponse<>(list);
+        }
 
-
-  public enum Colour{
-      BLUE, RED, GREEN
-  }
+        Page<T> listWithPagination = findAll(specification, filteringAndSortingSpecification.getPageRequest());
+        long count = count(specification);
+        return new FspResponse<>(fspRequest, listWithPagination.getContent(), count);
+    }
 }

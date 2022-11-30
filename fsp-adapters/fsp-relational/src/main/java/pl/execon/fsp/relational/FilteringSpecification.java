@@ -37,15 +37,15 @@
  *
  * Any modifications to this file must keep this entire header intact.
  */
-package pl.execon.fsp.oracle;
+package pl.execon.fsp.relational;
 
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import pl.execon.fsp.core.FilterInfo;
 import pl.execon.fsp.core.FspFilterOperator;
 import pl.execon.fsp.core.FspRequest;
-import pl.execon.fsp.oracle.exception.FilteringException;
-import pl.execon.fsp.oracle.predicate.PredicateCreator;
+import pl.execon.fsp.relational.exception.FilteringException;
+import pl.execon.fsp.relational.predicate.PredicateCreator;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;

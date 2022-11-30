@@ -37,11 +37,23 @@
  *
  * Any modifications to this file must keep this entire header intact.
  */
-package pl.execon.fsp.oracle;
+package pl.execon.fsp.relational;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Repository
-public interface FspTestRepository extends JpaRepository<FspTestObj, Long>, RelationalFsp<FspTestObj> {
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@Entity
+@NoArgsConstructor
+public class InnerTestObj {
+    @Id
+    private Long id;
+    private String innerText;
 }
