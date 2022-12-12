@@ -11,12 +11,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>fsp-relational</artifactId>
+    <version>0.1.0</version>
+    
     <dependencies>
         <!--        FSP-->
         <dependency>
             <groupId>pl.execon.commons</groupId>
             <artifactId>fsp-model</artifactId>
-            <version>0.1.0</version>
+            <version>${fsp-model.version}</version>
         </dependency>
 
         <!--        SPRING-->

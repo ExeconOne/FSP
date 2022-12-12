@@ -58,6 +58,7 @@
         <!--        MODULES VERSIONS  -->
         <fsp-model.version>0.1.0</fsp-model.version>
         <fsp-mongo.version>0.1.0</fsp-mongo.version>
+        <fsp-relational.version>0.1.0</fsp-relational.version>
         <!--        LIBRARIES VERSIONS  -->
         <lombok.version>1.18.24</lombok.version>
         <!--        TEST LIBRARIES VERSIONS  -->
@@ -77,6 +78,11 @@
                 <groupId>pl.execon.commons</groupId>
                 <artifactId>fsp-mongo</artifactId>
                 <version>${fsp-mongo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>pl.execon.commons</groupId>
+                <artifactId>fsp-relational</artifactId>
+                <version>${fsp-relational.version}</version>
             </dependency>
 
             <!--        LIBRARIES  -->
@@ -114,7 +120,7 @@
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
     <build>
@@ -126,7 +132,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>ossrh</serverId>
-                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
@@ -141,11 +147,11 @@
                                 <preamble>
                                     <![CDATA[This file Copyright © ${year} ${owner} (https://execon.pl/). All rights reserved.]]></preamble>
                                 <header>licenses/header.txt</header>
-                                <separator></separator>
+                                <separator/>
                                 <header>licenses/APACHE.txt</header>
-                                <separator></separator>
+                                <separator/>
                                 <header>licenses/EXECON.txt</header>
-                                <separator></separator>
+                                <separator/>
                                 <header>licenses/footer.txt</header>
                             </multi>
                             <excludes>
@@ -161,6 +167,51 @@
                         <year>2022</year>
                     </properties>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
             </plugin>
         </plugins>
     </build>
